@@ -1,0 +1,11 @@
+# Fish collection
+
+Alewife, blueback herring, mackerel, Atlantic herring, and butterfish were collected from four NOAA Northeast Fisheries Science Center (NEFSC) trawl surveys: spring 2013, spring 2014, fall 2014, and fall 2015. Each survey spanned the continental shelf from the northern Gulf of Maine to Cape Hatteras, with spring sampling encompassing March through May and fall sampling extending from September through early November. The fish we analyzed were selected randomly from those available within each of 4 regions: Mid-Atlantic Bight, Southern New England, Georges Bank, and Gulf of Maine. The number of fish analyzed per species per station ranged from 1 to 5. Fish were frozen shipboard at −80 °C and stored at −80 °C until processed in the laboratory.
+
+# Diet Data Collection
+
+Fish were thawed to near room temperature before dissection. Fork lengths were recorded for each fish, and the gastrointestinal tract (esophagus through intestine) was removed and weighed. The entire gastrointestinal tract was used due to the lack of a defined stomach in clupeids. The gastrointestinal tract was then opened, and contents were placed in 95% ethanol for preservation. Gut contents were examined under a dissecting microscope and identified to the lowest taxonomic level practical. In cases of extremely high gut fullness, a known subsample of prey items was taken with a pipette and enumerated, and this value was divided by the fraction of total volume that the subsample represented to yield an approximation for total stomach contents. 
+
+# Data Cleaning
+
+We gathered the original spreadsheet with prey items in wide-format into a long-format table with preyTaxon column and corresponding preyCount column. GMT date and time were merged from NOAA Fisheries trawl databases [provide citation for NOAA Fisheries trawl databases]. Local time was converted to hh:mm:ss format. Another column was added which contained a unique identifier for each fish examined. Additional columns were added which contain the best matched scientific name for fish and prey species from ITIS, along with their corresponding taxonomic serial numbers (TSN).

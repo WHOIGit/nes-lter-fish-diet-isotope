@@ -1,0 +1,17 @@
+attributeName	attributeDefinition	class	unit	dateTimeFormatString	missingValueCode	missingValueCodeExplanation
+cruise	Cruise that sample was collected during	character				
+station	Station where sample was collected	numeric	dimensionless			
+abbrevName_fish	Abbreviated name of fish species	character				
+Fish_Num	To be determined	numeric	dimensionless			
+d13C	Carbon signature	numeric	dimensionless			
+d15N	Nitrogen signature	numeric	dimensionless			
+C_to_N	Carbon to nitrogen ratio	numeric	dimensionless			
+dC_corr	Lipid-corrected carbon signature	numeric	dimensionless			
+uniqueIdentifierFish	Unique identifier for fish specimen	character				
+decimalLatitude	Latitude of sample event	numeric	dimensionless			
+decimalLongitude	Longitude of sample event	numeric	dimensionless			
+time_UTC	Time of fish collecton in UTC	Date		hh:mm:ss		
+date	Date of fish collection in UTC	Date		YYYY-MM-DD		
+scientificName_fish	Scientific name of fish specimen	character				
+scientificNameID_fish	Taxonomic serial number of fish specimen	character				
+vernacularName	Common name of fish specimen	character							

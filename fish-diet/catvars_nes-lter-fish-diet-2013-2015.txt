@@ -1,0 +1,5 @@
+attributeName	code	definition
+region	MAB	Mid-Atlantic Bight
+region	SNE	Southern New England
+region	GoM	Gulf of Maine
+region	GB	Georges Bank

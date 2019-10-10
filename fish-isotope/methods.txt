@@ -1,0 +1,11 @@
+# Fish Collection
+
+Alewife, blueback herring, mackerel, Atlantic herring, and butterfish were collected from four NOAA Northeast Fisheries Science Center (NEFSC) trawl surveys: spring 2013, spring 2014, fall 2014, and fall 2015. Each survey spanned the continental shelf from the northern Gulf of Maine to Cape Hatteras, with spring sampling encompassing March through May and fall sampling extending from September through early November. The fish we analyzed were selected randomly from those available within each of 4 regions: Mid-Atlantic Bight, Southern New England, Georges Bank, and Gulf of Maine. The number of fish analyzed per species per station ranged from 1 to 5. Fish were frozen shipboard at −80 °C and stored at −80 °C until processed in the laboratory.
+
+# Stable Isotope Data Collection
+
+Small sections of dorsal musculature of the 5 small pelagic species were analyzed for bulk carbon and nitrogen stable isotopes. Samples were dried at 60 degrees Celsius in a drying oven for at least 48 hours and then pulverized to a powder. Subsamples (1.2–1.5 mg) were weighed, wrapped in tin foil, and then analyzed with a PDZ Europa ANCA-GSL elemental analyzer interfaced to a PDZ Europa 20-20 isotope ratio mass spectrometer (Sercon Ltd., Cheshire, UK) by the University of California Davis Stable Isotope Facility. Analyses yielded carbon-to-nitrogen ratios and the isotopic ratios of 13C-to-12C and 15N-to-14N in each sample. We report stable isotope ratios with the reference standards of Pee Dee belemnite (for d13C) and atmospheric nitrogen (for d15N). A lipid correction curve was applied to each sample using the C-to-N ratio from the mass spectrometry results. This correction was made using the model created for fish muscle tissue, as reported by Logan et al., (2008) [provide citation and doi].
+
+# Data Cleaning
+
+A column was added which contained a unique identifier for each fish examined. Decimal latitude and longitude, UTC date, and UTC time were merged from NOAA Fisheries trawl databases [provide citation for NOAA Fisheries trawl databases]. Additional columns were added which contain the vernacular name for each fish, the best matched scientific name for each fish species from ITIS, along with the corresponding taxonomic serial number (TSN).
