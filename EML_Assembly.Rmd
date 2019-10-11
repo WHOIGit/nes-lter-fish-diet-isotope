@@ -1,5 +1,5 @@
 ---
-title: "EML Assembly for NES-LTER Diet Data 2013-2015"
+title: "EML Assembly for NES-LTER Small Pelagic Fish Diet and Stable Isotope Data from 2013-2015"
 author: "Jaxine Wolfe"
 date: "09/24/2019"
 output: html_document
@@ -36,12 +36,13 @@ For the Fisheries trawl datasets, the spring bottom trawl survey data can be fou
 Note date of access.
 ```{r}
 # set the path to the fisheries directory
-fisheries_path <- "/Users/jaxinewolfe/Documents/Research/PEP/NESLTER/Data/LlopizLab/CCA/FSCSTables_SVSTA/"
+fisheries_dir <- "/Users/jaxinewolfe/Documents/Research/PEP/NESLTER/Data/LlopizLab/CCA/FSCSTables_SVSTA/"
 # create list of files in the working directory
-file_list <- list.files(path = fisheries_path, full.names = TRUE)
+file_list <- list.files(path = fisheries_dir, full.names = TRUE)
 
 # Define columns to be extracted from fisheries data
-FSCScols <- c("CRUISE6", "STATION", "GMT_YEAR", "GMT_MONTH", "GMT_DAY", "GMT_TIME")
+FSCScols <- c("CRUISE6", "STATION", "GMT_YEAR", "GMT_MONTH", "GMT_DAY", "GMT_TIME", 
+              "DECDEG_BEGLAT", "DECDEG_BEGLON", "AVGDEPTH")
 
 # Combine spring and fall cruise datasets to be merged with the diet data
 for (i in 2:length(file_list)){
@@ -50,14 +51,21 @@ for (i in 2:length(file_list)){
     select(FSCScols) %>%
     filter(GMT_YEAR >= 2013 & GMT_YEAR <= 2015)
   # create temporary dataset to ammend the FSCSdataset
-  temp_dataset <- read_csv(file_list[i]) %>%
-    select(FSCScols)
+  temp_dataset <- read_csv(file_list[i]) %>% select(FSCScols)
   # add the rows of the new dataset (colnames should be the same)
   FSCSdataset <- rbind(FSCSdataset, temp_dataset[, colnames(FSCSdataset)])
   FSCSdataset[is.na(FSCSdataset)] <- "NA" # convert empties to NA
   # discard temporary dataset
   rm(temp_dataset)
 }
+
+# Consolodate GMT year, month, day columns into one
+FSCSdataset$date <- with(FSCSdataset,
+                               ymd(paste(GMT_YEAR, GMT_MONTH, GMT_DAY, sep= ' '),
+                                       tz = "GMT"))
+
+# remove columns used to consolo-date heh
+FSCSdataset <- FSCSdataset %>% select(-GMT_YEAR, -GMT_MONTH, -GMT_DAY)
 
 ```
 
@@ -86,7 +94,7 @@ diet <- read_excel(path = paste0(dir, "/", diet_xls),
 # standardize the naming scheme
 diet$Species[diet$Species == "S. Scombrus"] <- "S. scombrus"
 # unique(diet_join$Species) # check unique fish species
-# generalize this step
+# GENERALIZE THIS STEP
 
 # look at the spreadsheet layout, data is in wide format
 # str(diet)
@@ -102,6 +110,7 @@ preycols <- c("Centropages spp.", "Calanus spp.","PPC", "Temora longicornis",
               "Meltidae", "Aoridae", "Chaetognatha", "Ostracoda", "Crustacean_Larvae",
               "Cladocera", "Ammodytes spp.", "Larval_Fish", "Fish_Remains", "Polychaeta",
               "Cumacea", "Isopoda", "Other", "Unknown", "Nematoscelis spp.")
+
 # convert data to long format
 diet_long <- diet %>%
   gather(preyTaxon, preyCount, preycols, factor_key = TRUE) %>%
@@ -125,16 +134,11 @@ diet_join <- unique(left_join(x = diet_long, y = FSCSdataset,
 # diet_missing <- diet_join[is.na(diet_join$GMT_DAY),]
 # likely not listed as valid hauls in the Fisheries archives
 # eliminate rows with missing fisheries data
-diet_join <- diet_join[complete.cases(diet_join[ , "GMT_DAY"]),]
+diet_join <- diet_join[complete.cases(diet_join[ , "date"]),]
 
-# Date and Time --------
 # Convert the Time column to %H:%M:%S format in the diet dataset
 diet_join$time_local <- format(as.POSIXct(str_pad(diet_join$Time, 4, pad = "0"),
                                    format="%H%M", origin = ""), "%H:%M:%S")
-# Consolodate GMT year, month, day columns into one
-diet_join$date <- with(diet_join,
-                               ymd(paste(GMT_YEAR, GMT_MONTH, GMT_DAY, sep= ' '),
-                                       tz = "GMT"))
 
 ## Scientific Names --------
 # Prey
@@ -152,8 +156,8 @@ diet_resolved <- left_join(x = diet_join, y = itis_resolved,
 
 # Fish
 # Load stomach content data from excel sheet
-fishkey <- read_excel(path = paste0(dir, "/", diet_xls), 
-                  sheet = "FishLookup", na = "NA")
+fishkey <- read_csv(paste0(dir, "/fishlookup.csv"))
+# merge diet data with fish key
 diet_final <- left_join(x = diet_resolved, y = fishkey,
                             by=(c("Species"="abbrevName_fish")))
 
@@ -161,13 +165,14 @@ diet_final <- left_join(x = diet_resolved, y = fishkey,
 
 # assign final dataframe, leaving out unnecessary columns
 diet_EDI <- diet_final %>%
-  select(-Time, -GMT_YEAR, -GMT_MONTH, -GMT_DAY, - preytype_stnd)
+  select(-Time, -DECDEG_BEGLAT, -DECDEG_BEGLON, -AVGDEPTH, - preytype_stnd)
   
 # Rename columns as needed
 # GENERALIZE THIS STEP
 colnames(diet_EDI)[colnames(diet_EDI)=="Cruise"] <- "cruise"
 colnames(diet_EDI)[colnames(diet_EDI)=="Station"] <- "station"
 colnames(diet_EDI)[colnames(diet_EDI)=="StationID"] <- "cruise_station"
+colnames(diet_EDI)[colnames(diet_EDI)=="Station_Depth"] <- "average_depth"
 colnames(diet_EDI)[colnames(diet_EDI)=="Region"] <- "region"
 colnames(diet_EDI)[colnames(diet_EDI)=="Species"] <- "abbrevName_fish"
 colnames(diet_EDI)[colnames(diet_EDI)=="resolved_names"] <- "scientificName_preyTaxon"
@@ -177,6 +182,9 @@ colnames(diet_EDI)[colnames(diet_EDI)=="Latitude"] <- "decimalLatitude"
 colnames(diet_EDI)[colnames(diet_EDI)=="Longitude"] <- "decimalLongitude"
 # assumes that NOAA fisheries used UTC, not GMT 
 colnames(diet_EDI)[colnames(diet_EDI)=="GMT_TIME"] <- "time_UTC"
+
+# reorder columns
+# man.data[,c("Llopiz_preytypes", "preytype_validated", "resolved_names", "resolved_id_fromgnr", "data_source", "taxon_level_fromid", "taxon_name_fromid", "taxon_bins", "name_match")]
 
 # write the CSV file for upload to the EDI repository
 write.csv(diet_EDI, paste0(dir, "/fish-diet/nes-lter-fish-diet-2013-2015.csv"),
@@ -194,6 +202,7 @@ Steps:
 
 ```{r}
 
+# set filename to variable
 iso_xls <- "Forage_Fish_Stable_Isotope_Data_2013_2015_Final.xlsx"
 
 # Load stomach content data from excel sheet
@@ -207,19 +216,23 @@ isotope$uniqueIdentifierFish <- with(isotope,
                          paste(Cruise, Station, Fish_Num, sub(". ", "_", Species), 
                                sep = "_"))
 
-# merge geospatial and temporal columns from diet data 
-isotope_EDI <- unique(left_join(x = isotope, y = diet_EDI %>%
-                             select(uniqueIdentifierFish, decimalLatitude, 
-                                    decimalLongitude, time_UTC, date, 
-                                    scientificName_fish, scientificNameID_fish, vernacularName),
-                          by = "uniqueIdentifierFish"))
+# merge fisheries columns (geospatial, temporal, depth info)
+iso_join <- unique(left_join(x = isotope, y = FSCSdataset, 
+                       by = c("Cruise" = "CRUISE6", "Station" = "STATION")))
+# merge fishkey columns
+iso_fish <- left_join(x = iso_join, y = fishkey,
+                            by=(c("Species"="abbrevName_fish")))
 
-# isolate missing fisheries cruise_stations (75 entries...email Justin)
-isotope_missing <- isotope_EDI[is.na(isotope_EDI$date),]
+# Missing Values
+# isotope_missing <- isotope_EDI[is.na(isotope_EDI$date),]
 # write_csv(isotope_missing,"ISOTOPE_MIA.csv")
-# check if valid haul in Fisheries datasheets
-# eliminate rows with missing fisheries data (40 total)
+# eliminate rows with missing fisheries data
 # isotope_EDI <- isotope_EDI[complete.cases(isotope_EDI[ , "date"]),]
+
+## Final Adjustments --------
+
+# reassign dataset
+isotope_EDI <- iso_fish
 
 # Rename columns as needed
 # GENERALIZE THIS STEP
@@ -227,7 +240,11 @@ colnames(isotope_EDI)[colnames(isotope_EDI)=="Cruise"] <- "cruise"
 colnames(isotope_EDI)[colnames(isotope_EDI)=="Station"] <- "station"
 colnames(isotope_EDI)[colnames(isotope_EDI)=="Species"] <- "abbrevName_fish"
 colnames(isotope_EDI)[colnames(isotope_EDI)=="C:N"] <- "C_to_N"
-colnames(isotope_EDI)[colnames(isotope_EDI)=="dC corr"] <- "dC_corr"
+colnames(isotope_EDI)[colnames(isotope_EDI)=="dC corr"] <- "d13C_corr"
+colnames(isotope_EDI)[colnames(isotope_EDI)=="GMT_TIME"] <- "time_UTC"
+colnames(isotope_EDI)[colnames(isotope_EDI)=="DECDEG_BEGLAT"] <- "decimalLatitude"
+colnames(isotope_EDI)[colnames(isotope_EDI)=="DECDEG_BEGLON"] <- "decimalLongitude"
+colnames(isotope_EDI)[colnames(isotope_EDI)=="AVGDEPTH"] <- "average_depth"
 
 # write the CSV file to new directory
 # this will be the dataset published to the EDI repository
@@ -236,7 +253,7 @@ write.csv(isotope_EDI, paste0(dir, "/fish-isotope/nes-lter-fish-stable-isotope-2
 
 ```
 
-## Quality Assurance
+## Quality Assurance: Frequency check
 
 Check that the total counts of prey taxa per fish species aligned with the frequencies reported in Suca et al. (2018) Supplementary Material.
 ```{r}
@@ -252,13 +269,13 @@ dietsp <- diet %>%
 # isolate prey columns and convert counts to proportions
   dietprop <- select(dietsp, prey_inside)/dietsp$preytotal
   dietprop[dietprop == "NaN"] <- 0
-  
 
 # check to make sure that UTC and local have the expected offset of 5 hours
-tz_test <- diet_join %>% select(time_local, GMT_TIME)
+tz_test <- diet_EDI %>% select(time_local, time_UTC)
+
 ```
 
-## Mapping the Data
+## Quality Assurance: Mapping the Data
 
 This chunk of code enables a visual map check of the data points. For the diet and stable isotope datasets, we would expect that none of the data points are beyond the shelf or inland. 
 ```{r}
@@ -267,6 +284,7 @@ library(dplyr)
 
 nes <- map_data("state") %>% filter(long > -77)
 
+# Justin's given coordinates
 ggplot() +
   geom_polygon(data = nes, mapping = aes(x = long, y = lat, group = group),
                fill = NA, color = "grey50") +
@@ -275,10 +293,67 @@ ggplot() +
   coord_fixed(1.3) +
   theme_classic()
 
-```
-The data fails the visual check so we have to fix that...
+# Fisheries given coordinates
+ggplot() +
+  geom_polygon(data = nes, mapping = aes(x = long, y = lat, group = group),
+               fill = NA, color = "grey50") +
+  geom_point(diet_EDI, mapping = aes(x = DECDEG_BEGLON, y = DECDEG_BEGLAT, color = region),
+            size = 1) + 
+  coord_fixed(1.3) +
+  theme_classic()
 
-## Installing EML Assembly from GitHub
+```
+The data fails the visual check, we need to investigate further...
+
+## Quality Assurance: Checking Depth and Coordinate Mismatches
+
+This chunk highlights the differences between the Fisheries datasets and Justin's provided dataset. 
+```{r}
+
+# reassign dataset 
+diet_check <- diet_EDI
+
+# round coordinates 
+diet_check$decimalLatitude <- round(diet_check$decimalLatitude, 1)
+diet_check$decimalLongitude <- round(diet_check$decimalLongitude, 1)
+diet_check$DECDEG_BEGLAT <- round(diet_check$DECDEG_BEGLAT, 1)
+diet_check$DECDEG_BEGLON <- round(diet_check$DECDEG_BEGLON, 1)
+
+# create empty columns to check mismatches
+diet_check$lon_match <- FALSE
+diet_check$lat_match <- FALSE
+diet_check$depth_match <- FALSE
+
+# loop through each row 
+for (i in 1:nrow(diet_check)) {
+    # check if Fisheries and Justins average depths match
+    if (diet_check$Station_Depth[i] == as.numeric(diet_check$AVGDEPTH[i])) {
+      # set name_match to true
+      diet_check$depth_match[i] <- TRUE
+    }
+      # check if Fisheries and Justin's coordinates match
+      if (diet_check$decimalLongitude[i] == diet_check$DECDEG_BEGLON[i]) {
+      # set name_match to true
+      diet_check$lon_match[i] <- TRUE
+    }
+      if (diet_check$decimalLatitude[i] == diet_check$DECDEG_BEGLAT[i]) {
+      # set name_match to true
+      diet_check$lat_match[i] <- TRUE
+    }
+}
+
+# isolate the rows that are FALSE
+coord_mismatch <- diet_check %>% filter(lon_match == FALSE | lat_match == FALSE)
+depth_mismatch <- diet_check %>% filter(depth_match == FALSE)
+
+# write csv files
+write.csv(coord_mismatch, "coord_mismatch.csv", row.names = FALSE)
+write.csv(depth_mismatch, "depth_mismatch.csv", row.names = FALSE)
+
+```
+
+
+## EDI Prep: Installing EML Assembly from GitHub
 
 The instructions for installing EMLassemblyline package can be found [here](https://github.com/EDIorg/EMLassemblyline/blob/master/documentation/instructions.md). This documentation also includes instructions for assembling EML templates for export. 
 
@@ -297,7 +372,7 @@ library(EML)
 
 ```
 
-## Assembling templates for Diet Data
+## EDI Prep: Assembling templates for Diet Data
 
 NOTE: Most templates had to be manually annotated after they were imported. Information from the excel spreadsheet workbook was copy-pasted into the .txt files.
 ```{r}
@@ -309,26 +384,23 @@ diet_csv <- "nes-lter-fish-diet-2013-2015.csv"
 import_templates(path = paste0(dir,"/fish-diet"),
                  license = "CCBY",
                  data.files = diet_csv)
-                              
-# Determine start and end date (YYYY-MM-DD)
-# Used for make_eml
-startdate <- min(diet_EDI$date)
-enddate <- max(diet_EDI$date)
-# temporal.coverage argument is expecting objects of 'character' class, not 'Date'
-startdate_as_char <- as.character(startdate)
-enddate_as_char <- as.character(enddate)
-
-# Attributes
+                   
+# import categorical variable template for diet data
+define_catvars(path = paste0(dir,"/fish-diet"))
+# Region is the only catvar, defined manually within the template
+          
 # View and search the standard units dictionary
 # view_unit_dictionary()
 
-## Categorical Vars --------
-# Define categorical variables for diet data
-define_catvars(path = paste0(dir,"/fish-diet"))
-# Region is the only catvar, the expanded regions were defined manually
+# Determine temporal coverage for make_eml
+# define start and end date (YYYY-MM-DD)
+startdate <- min(diet_EDI$date)
+enddate <- max(diet_EDI$date)
+# temporal.coverage expects objects of 'character' class
+startdate_as_char <- as.character(startdate)
+enddate_as_char <- as.character(enddate)
 
-## Geographic coverage --------
-# define bounding box for all observations
+# Determine geographic coverage for make_eml
 # round to 5 decimal places
 North <- round(max(diet_EDI$decimalLatitude), digits = 5)
 East <- round(max(diet_EDI$decimalLongitude), digits = 5)
@@ -337,7 +409,7 @@ West <- round(min(diet_EDI$decimalLongitude), digits = 5)
 
 ```
 
-## Make EML for Diet Data 
+## EDI Prep: Make EML for Diet Data 
 
 The overview of EML can  be found [here](https://github.com/ropensci/EML). 
 
@@ -374,25 +446,18 @@ iso_csv <- "nes-lter-fish-stable-isotope-2013-2015.csv"
 import_templates(path = paste0(dir, "/fish-isotope"),
                  license = "CCBY",
                  data.files = iso_csv)
+# no categorical variables for this data
                               
-# Determine start and end date (YYYY-MM-DD)
-# Used for make_eml
+# Determine temporal coverage for make_eml
+# define start and end date (YYYY-MM-DD)
 startdate <- min(isotope_EDI$date)
 enddate <- max(isotope_EDI$date)
-# temporal.coverage argument is expecting objects of 'character' class, not 'Date'
+# temporal.coverage expects objects of 'character' class
 startdate_as_char <- as.character(startdate)
 enddate_as_char <- as.character(enddate)
 
-# Attributes
-# View and search the standard units dictionary
-# view_unit_dictionary()
-
-## Categorical Vars --------
-# there are no categorical variable for this dataset
-
-## Geographic coverage --------
-
-# define bounding box for all observations
+# Determine geographic coverage for make_eml
+# round to 5 decimal places
 North <- round(max(isotope_EDI$decimalLatitude), digits = 5)
 East <- round(max(isotope_EDI$decimalLongitude), digits = 5)
 South <- round(min(isotope_EDI$decimalLatitude), digits = 5)
