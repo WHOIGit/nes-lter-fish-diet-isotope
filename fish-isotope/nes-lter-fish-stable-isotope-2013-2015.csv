@@ -1,4 +1,4 @@
-"cruise","station","abbrevName_fish","Fish_Num","d13C","d15N","C_to_N","d13C_corr","uniqueIdentifierFish","time_UTC","decimalLatitude","decimalLongitude","averageDepth","date","scientificName_fish","scientificNameID_fish","vernacularName"
+"cruise","station","abbrevName_fish","Fish_Num","d13C","d15N","C_to_N","d13C_corr","uniqueIdentifierFish","time_UTC","decimalLatitude","decimalLongitude","average_depth","date","scientificName_fish","scientificNameID_fish","vernacularName"
 201302,60,"C. harengus",2,-18.6308651226024,12.333877043007,3.30275495196016,-18.1357397675215,"201302_60_2_C_harengus",01:10:35,36.200507,-75.339775,"30",2013-03-21,"Clupea harengus",161722,"Atlantic herring"
 201302,60,"C. harengus",4,-18.5059345594879,12.7944651807415,3.2408604095337,-18.0940677672242,"201302_60_4_C_harengus",01:10:35,36.200507,-75.339775,"30",2013-03-21,"Clupea harengus",161722,"Atlantic herring"
 201302,134,"S. scombrus",8,-19.1850159294213,12.4472029194427,3.1853609003564,-18.8491687453046,"201302_134_8_S_scombrus",23:17:28,40.292947,-72.252513,"60",2013-03-28,"Scomber scombrus",172414,"Atlantic mackerel"

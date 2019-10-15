@@ -2,21 +2,22 @@ attributeName	attributeDefinition	class	unit	dateTimeFormatString	missingValueCo
 cruise	Cruise that sample was collected during	character				
 station	Station where sample was collected	numeric	dimensionless			
 cruise_station	Cruise and station identifier for sample collected	character				
-decimalLatitude	Latitude of sample event	numeric	degree			
-decimalLongitude	Longitude of sample event	numeric	degree			
-FishNum	To be determined	numeric	dimensionless			
-Station_Depth	Depth of seafloor at location of sampling event	numeric	meter			
-region	Regions as categorized in Suca et al. 2018	categorical				
-forkLength	Fork length measured for fish specimen	numeric	millimeter			
-abbrevName_fish	Abbreviated name of fish species	character				
-preyTaxon	Taxonomic category of prey item	character				
-preyCount	Total number of prey items per taxonomic category in the gut of fish specimen	numeric	dimensionless			
-uniqueIdentifierFish	Unique identifier for fish specimen	character				
+decimalLatitude	Latitude at the start of the sample event	numeric	dimensionless			
+decimalLongitude	Longitude at the start of the sample event	numeric	dimensionless			
+decimalLongitude_flag	Iode quality flag for decimalLongitude field	categorical				
 time_UTC	Time of fish collecton in UTC	Date		hh:mm:ss		
 time_local	Time of sample collection in Eastern Standard Time	Date		hh:mm:ss		
 date	Date of fish collection in UTC	Date		YYYY-MM-DD		
-scientificName_preyTaxon	Scientific name of fish specimen	character				
-scientificNameID_preyTaxon	Scientific name of prey item	character				
-scientificName_fish	Taxonomic serial number of fish specimen	character				
-scientificNameID_fish	Taxonomic serial number of prey item	character				
+region	Regions as categorized in Suca et al. 2018	categorical				
+average_depth	Average depth of seafloor during sampling event	numeric	meter			
+FishNum	Unique number for fish specimen	numeric	dimensionless			
+forkLength	Length of the fish measured from the tip of the snout to the end of the middle caudal fin rays	numeric	millimeter			
+abbrevName_fish	Abbreviated name of fish species	character				
+uniqueIdentifierFish	Unique identifier for fish specimen	character				
+scientificName_fish	Scientific name of fish specimen	character				
+scientificNameID_fish	Taxonomic serial number of fish specimen	character				
 vernacularName	Common name of fish specimen	character				
+preyTaxon	Llopiz lab category of prey item	character				
+scientificName_preyTaxon	Scientific name of prey item	character				
+scientificNameID_preyTaxon	Taxonomic serial number of prey item	character				
+preyCount	Total number of prey items per taxonomic category in the gut of fish specimen	numeric	dimensionless			

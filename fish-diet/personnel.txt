@@ -1,8 +1,9 @@
 givenName	middleInitial	surName	organizationName	electronicMailAddress	userId	role	projectTitle	fundingAgency	fundingNumber
-Justin	J	Suca	Northeast Shelf U.S. Shelf LTER	jsuca@whoi.edu	0000-0001-5532-4780	creator		NSF	OCE-1655686
-Julie	W	Pringle	Northeast Shelf U.S. Shelf LTER			technician		NSF	OCE-1655687
-Zofia	R	Knorek	Northeast Shelf U.S. Shelf LTER			technician		NSF	OCE-1655688
-Sara	L	Hamilton	Northeast Shelf U.S. Shelf LTER			technician		NSF	OCE-1655689
-David	E	Richardson	NOAA Fisheries Science Center			PI		NSF	OCE-1655690
-Joel	K	Llopiz	Northeast Shelf U.S. Shelf LTER	jllopiz@whoi.edu	0000-0002-7584-7471	PI	Northeast Shelf U.S. Shelf LTER	NSF	OCE-1655691
-NES-LTER Information Manager			Northeast Shelf U.S. Shelf LTER	lter-nes-info@whoi.edu		contact		NSF	OCE-1655692
+Justin	J	Suca	Northeast U.S. Shelf LTER	jsuca@whoi.edu	0000-0001-5532-4780	creator		NSF	OCE-1655686
+Julie	W	Pringle	Northeast U.S. Shelf LTER			technician		NSF	OCE-1655687
+Zofia	R	Knorek	Northeast U.S. Shelf LTER			technician		NSF	OCE-1655688
+Sara	L	Hamilton	Northeast U.S. Shelf LTER			technician		NSF	OCE-1655689
+David	E	Richardson	Northeast U.S. Shelf LTER			PI		NSF	OCE-1655690
+Joel	K	Llopiz	Northeast U.S. Shelf LTER	jllopiz@whoi.edu	0000-0002-7584-7471	PI	Northeast U.S. Shelf LTER	NSF	OCE-1655691
+NES-LTER Information Manager			Northeast U.S. Shelf LTER	lter-nes-info@whoi.edu		contact		NSF	OCE-1655692
+Jaxine	L	Wolfe	Northeast U.S. Shelf LTER	jawolfe@whoi.edu		metadataProvider		NSF	OCE-1655693

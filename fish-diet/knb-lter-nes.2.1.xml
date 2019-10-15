@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<eml:eml xmlns:eml="eml://ecoinformatics.org/eml-2.1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:stmml="http://www.xml-cml.org/schema/stmml-1.1" packageId="nes-lte-fish-diet" xsi:schemaLocation="eml://ecoinformatics.org/eml-2.1.1  http://nis.lternet.edu/schemas/EML/eml-2.1.1/eml.xsd" system="edi">
+<eml:eml xmlns:eml="eml://ecoinformatics.org/eml-2.1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:stmml="http://www.xml-cml.org/schema/stmml-1.1" packageId="knb-lter-nes.2.1" xsi:schemaLocation="eml://ecoinformatics.org/eml-2.1.1  http://nis.lternet.edu/schemas/EML/eml-2.1.1/eml.xsd" system="edi">
   <access authSystem="https://pasta.edirepository.org/authentication" order="allowFirst" scope="document">
     <allow>
       <principal>uid=NES,o=LTER,dc=ecoinformatics,dc=org</principal>
@@ -49,7 +49,17 @@
       <organizationName>Northeast Shelf U.S. Shelf LTER</organizationName>
       <role>Technician</role>
     </associatedParty>
-    <pubDate>2019-10-09</pubDate>
+    <associatedParty>
+      <individualName>
+        <givenName>Jaxine</givenName>
+        <givenName>L</givenName>
+        <surName>Wolfe</surName>
+      </individualName>
+      <organizationName>Northeast Shelf U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>jawolfe@whoi.edu</electronicMailAddress>
+      <role>Metadataprovider</role>
+    </associatedParty>
+    <pubDate>2019-10-15</pubDate>
     <abstract>
       <para>
   These data represent the diet composition of small pelagic fishes
@@ -106,10 +116,10 @@
       <geographicCoverage>
         <geographicDescription>Northeast U.S. Shelf</geographicDescription>
         <boundingCoordinates>
-          <westBoundingCoordinate>-75.379185</westBoundingCoordinate>
-          <eastBoundingCoordinate>-66.4666666666667</eastBoundingCoordinate>
+          <westBoundingCoordinate>-75.37919</westBoundingCoordinate>
+          <eastBoundingCoordinate>-66.46667</eastBoundingCoordinate>
           <northBoundingCoordinate>44.35496</northBoundingCoordinate>
-          <southBoundingCoordinate>36.1056666666667</southBoundingCoordinate>
+          <southBoundingCoordinate>36.10567</southBoundingCoordinate>
         </boundingCoordinates>
       </geographicCoverage>
       <temporalCoverage>
@@ -137,35 +147,36 @@
           <section>
             <title>Fish collection</title>
             <para>
-    Alewife, blueback herring, mackerel, Atlantic herring, and
-    butterfish were collected from four NOAA Northeast Fisheries Science
-    Center (NEFSC) trawl surveys: spring 2013, spring 2014, fall 2014,
-    and fall 2015. Each survey spanned the continental shelf from the
-    northern Gulf of Maine to Cape Hatteras, with spring sampling
-    encompassing March through May and fall sampling extending from
-    September through early November. The fish we analyzed were selected
-    randomly from those available within each of 4 regions: Mid-Atlantic
-    Bight, Southern New England, Georges Bank, and Gulf of Maine. The
-    number of fish analyzed per species per station ranged from 1 to 5.
-    Fish were frozen shipboard at −80 °C and stored at −80 °C until
-    processed in the laboratory.
+    Alewife, blueback herring, Atlantic mackerel, Atlantic herring, and
+    Atlantic butterfish were collected from four NOAA Northeast
+    Fisheries Science Center (NEFSC) trawl surveys: spring 2013, spring
+    2014, fall 2014, and fall 2015. Each survey spanned the continental
+    shelf from the northern Gulf of Maine to Cape Hatteras, with spring
+    sampling encompassing March through May and fall sampling extending
+    from September through early November. The fish we analyzed were
+    selected randomly from those available within each of 4 regions:
+    Mid-Atlantic Bight, Southern New England, Georges Bank, and Gulf of
+    Maine. The number of fish analyzed per species per station ranged
+    from 1 to 5. Fish were frozen shipboard at −80 °C and stored at −80
+    °C until processed in the laboratory.
   </para>
           </section>
           <section>
             <title>Diet Data Collection</title>
             <para>
     Fish were thawed to near room temperature before dissection. Fork
-    lengths were recorded for each fish, and the gastrointestinal tract
-    (esophagus through intestine) was removed and weighed. The entire
-    gastrointestinal tract was used due to the lack of a defined stomach
-    in clupeids. The gastrointestinal tract was then opened, and
-    contents were placed in 95% ethanol for preservation. Gut contents
-    were examined under a dissecting microscope and identified to the
-    lowest taxonomic level practical. In cases of extremely high gut
-    fullness, a known subsample of prey items was taken with a pipette
-    and enumerated, and this value was divided by the fraction of total
-    volume that the subsample represented to yield an approximation for
-    total stomach contents.
+    lengths were recorded for each fish. The entire gastrointestinal
+    tract was used due to the lack of a defined stomach in clupeids. The
+    gastrointestinal tract was then opened, and contents were placed in
+    95% ethanol for preservation. Gut contents were examined under a
+    dissecting microscope and identified to the lowest taxonomic level
+    practical. In cases of extremely high gut fullness, a known
+    subsample of prey items was taken with a pipette and enumerated, and
+    this value was divided by the fraction of total volume that the
+    subsample represented to yield an approximation for total stomach
+    contents. (We do not recognize the rows in the data table for which
+    the latter applies. The assumption is that all rows represent
+    totals.)
   </para>
           </section>
           <section>
@@ -175,11 +186,23 @@
     into a long-format table with preyTaxon column and corresponding
     preyCount column. GMT date and time were merged from NOAA Fisheries
     trawl databases [provide citation for NOAA Fisheries trawl
-    databases]. Local time was converted to hh:mm:ss format. Another
-    column was added which contained a unique identifier for each fish
-    examined. Additional columns were added which contain the best
-    matched scientific name for fish and prey species from ITIS, along
-    with their corresponding taxonomic serial numbers (TSN).
+    databases]. Average depth was also obtained from fisheries datasets,
+    with the exception of Cruise 201504. Local time was converted to
+    hh:mm:ss format. Another column was added which contained a unique
+    identifier for each fish examined. Additional columns were added
+    which contain the vernacular name for each fish, the best matched
+    scientific name for fish and prey species from ITIS, along with
+    their corresponding taxonomic serial numbers (TSN).
+  </para>
+          </section>
+          <section>
+            <title>Quality Assurance</title>
+            <para>
+    We assured that the geographic and temporal coverage of the clean
+    data table were within expected ranges. We added a quality assurance
+    flag to the decimalLongitude column. We assured that the total
+    counts of prey taxa per fish species aligned with the frequencies
+    reported in Suca et al. (2018) Supplementary Material.
   </para>
           </section>
         </description>
@@ -214,12 +237,12 @@
       </relatedProject>
     </project>
     <dataTable>
-      <entityName>Processed fish diet data</entityName>
-      <entityDescription>Processed fish diet data</entityDescription>
+      <entityName>Fish diet data cleaned for EDI</entityName>
+      <entityDescription>Fish diet data cleaned for EDI</entityDescription>
       <physical>
         <objectName>nes-lter-fish-diet-2013-2015.csv</objectName>
-        <size unit="bytes">305623</size>
-        <authentication method="MD5">d861019e5747c3c55c4a156b247fff8c</authentication>
+        <size unit="bytes">305647</size>
+        <authentication method="MD5">bcde4d822645cf86231f93c73805c445</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -476,23 +499,23 @@
           </measurementScale>
         </attribute>
         <attribute>
-          <attributeName>time_local</attributeName>
-          <attributeDefinition>Time of sample collection in Eastern Standard Time</attributeDefinition>
-          <storageType>date</storageType>
-          <measurementScale>
-            <dateTime>
-              <formatString>hh:mm:ss</formatString>
-              <dateTimeDomain/>
-            </dateTime>
-          </measurementScale>
-        </attribute>
-        <attribute>
           <attributeName>date</attributeName>
           <attributeDefinition>Date of fish collection in UTC</attributeDefinition>
           <storageType>date</storageType>
           <measurementScale>
             <dateTime>
               <formatString>YYYY-MM-DD</formatString>
+              <dateTimeDomain/>
+            </dateTime>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>time_local</attributeName>
+          <attributeDefinition>Time of sample collection in Eastern Standard Time</attributeDefinition>
+          <storageType>date</storageType>
+          <measurementScale>
+            <dateTime>
+              <formatString>hh:mm:ss</formatString>
               <dateTimeDomain/>
             </dateTime>
           </measurementScale>
@@ -567,16 +590,37 @@
             </nominal>
           </measurementScale>
         </attribute>
+        <attribute>
+          <attributeName>decimalLongitude_flag</attributeName>
+          <attributeDefinition>Iode quality flag for decimalLongitude field</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <enumeratedDomain>
+                  <codeDefinition>
+                    <code>1</code>
+                    <definition>Good</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>3</code>
+                    <definition>Questionable</definition>
+                  </codeDefinition>
+                </enumeratedDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
       </attributeList>
       <numberOfRecords>1342</numberOfRecords>
     </dataTable>
     <otherEntity>
-      <entityName>Raw fish diet data</entityName>
-      <entityDescription>Raw fish diet data</entityDescription>
+      <entityName>Original fish diet dataset from the Llopiz lab</entityName>
+      <entityDescription>Original fish diet dataset from the Llopiz lab</entityDescription>
       <physical>
         <objectName>Forage_Fish_Diet_Data_2013_2015_Final.xlsx</objectName>
-        <size unit="bytes">129345</size>
-        <authentication method="MD5">670ca4a329aa12130addd16f69b6138e</authentication>
+        <size unit="bytes">127742</size>
+        <authentication method="MD5">02976a28ac55fdc400704c65c4fdae32</authentication>
         <dataFormat>
           <externallyDefinedFormat>
             <formatName>unknown</formatName>
