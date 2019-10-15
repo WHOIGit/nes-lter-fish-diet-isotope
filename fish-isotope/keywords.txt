@@ -1,1 +1,6 @@
 keyword	keywordThesaurus
+Fish
+Stable Isotope
+Carbon
+Nitrogen
+Northeast U.S. Shelf

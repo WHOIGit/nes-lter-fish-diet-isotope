@@ -5,3 +5,4 @@ region	GoM	Gulf of Maine
 region	GB	Georges Bank
 decimalLongitude_flag	1	Good
 decimalLongitude_flag	3	Questionable
+decimalLongitude_flag	NA	Data not available

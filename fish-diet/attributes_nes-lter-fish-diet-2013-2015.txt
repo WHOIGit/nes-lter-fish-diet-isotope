@@ -4,10 +4,10 @@ station	Station where sample was collected	numeric	dimensionless
 cruise_station	Cruise and station identifier for sample collected	character				
 decimalLatitude	Latitude at the start of the sample event	numeric	dimensionless			
 decimalLongitude	Longitude at the start of the sample event	numeric	dimensionless			
-decimalLongitude_flag	Iode quality flag for decimalLongitude field	categorical				
-time_UTC	Time of fish collecton in UTC	Date		hh:mm:ss		
+decimalLongitude_flag	Iode quality flag for decimalLongitude field	categorical			NA	Missing data from fisheries datasets
+time_UTC	Time of fish collecton in UTC	Date		hh:mm:ss	NA	Missing data from fisheries datasets
 time_local	Time of sample collection in Eastern Standard Time	Date		hh:mm:ss		
-date	Date of fish collection in UTC	Date		YYYY-MM-DD		
+date	Date of fish collection in UTC	Date		YYYY-MM-DD	NA	Missing data from fisheries datasets
 region	Regions as categorized in Suca et al. 2018	categorical				
 average_depth	Average depth of seafloor during sampling event	numeric	meter			
 FishNum	Unique number for fish specimen	numeric	dimensionless			

@@ -1,17 +1,18 @@
 attributeName	attributeDefinition	class	unit	dateTimeFormatString	missingValueCode	missingValueCodeExplanation
 cruise	Cruise that sample was collected during	character				
 station	Station where sample was collected	numeric	dimensionless			
+decimalLatitude	Latitude of sample event	numeric	dimensionless		NA	Missing data in fisheries dataset
+decimalLongitude	Longitude of sample event	numeric	dimensionless		NA	Missing data in fisheries dataset
+time_UTC	Time of fish collecton in UTC	Date		hh:mm:ss	NA	Missing data in fisheries dataset
+date	Date of fish collection in UTC	Date		YYYY-MM-DD	NA	Missing data in fisheries dataset
+averageDepth	Average depth of seafloor during sample event	numeric	meter		NA	Missing data in fisheries dataset
+Fish_Num	Unique number for fish specimen	numeric	dimensionless			
 abbrevName_fish	Abbreviated name of fish species	character				
-Fish_Num	To be determined	numeric	dimensionless			
-d13C	Carbon signature	numeric	dimensionless			
-d15N	Nitrogen signature	numeric	dimensionless			
-C_to_N	Carbon to nitrogen ratio	numeric	dimensionless			
-dC_corr	Lipid-corrected carbon signature	numeric	dimensionless			
 uniqueIdentifierFish	Unique identifier for fish specimen	character				
-decimalLatitude	Latitude of sample event	numeric	dimensionless			
-decimalLongitude	Longitude of sample event	numeric	dimensionless			
-time_UTC	Time of fish collecton in UTC	Date		hh:mm:ss		
-date	Date of fish collection in UTC	Date		YYYY-MM-DD		
 scientificName_fish	Scientific name of fish specimen	character				
 scientificNameID_fish	Taxonomic serial number of fish specimen	character				
-vernacularName	Common name of fish specimen	character							
+vernacularName	Common name of fish specimen	character				
+d13C	Carbon-13 to Carbon-12 isotopic ratio in delta noation	numeric	dimensionless			
+d15N	Nitrogen-15 to Nitrogen-14 isotopic ratio in delta noation	numeric	dimensionless			
+C_to_N	Carbon to nitrogen isotopic ratio	numeric	dimensionless			
+d13C_corr	Lipid-corrected carbon signature	numeric	dimensionless			

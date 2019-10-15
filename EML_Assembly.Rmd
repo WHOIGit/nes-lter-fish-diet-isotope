@@ -144,12 +144,6 @@ diet_long$uniqueIdentifierFish <- with(diet_long,
 diet_join <- unique(left_join(x = diet_long, y = FSCSdataset, 
                        by = c("Cruise" = "CRUISE6", "Station" = "STATION")))
 
-# uncomment to isolate missing fisheries cruise_stations
-# diet_missing <- diet_join[is.na(diet_join$GMT_DAY),]
-# likely not listed as valid hauls in the Fisheries archives
-# eliminate rows with missing fisheries data
-diet_join <- diet_join[complete.cases(diet_join[ , "date"]),]
-
 # Convert the Time column to %H:%M:%S format in the diet dataset
 diet_join$time_local <- format(as.POSIXct(str_pad(diet_join$Time, 4, pad = "0"),
                                    format="%H%M", origin = ""), "%H:%M:%S")
@@ -187,6 +181,14 @@ diet_check$depth_match <- FALSE
 
 # loop through each row 
 for (i in 1:nrow(diet_check)) {
+  # if there's no fisheries data, move to the next row
+    if (is.na(diet_check$date[i]) == TRUE) {
+      diet_check$lon_match[i] <- NA_character_
+      diet_check$lat_match[i] <- NA_character_
+      diet_check$depth_match[i] <- NA_character_
+      i <- i + 1
+    next
+    }
     # check if Fisheries and Justins average depths match
     if (diet_check$Station_Depth[i] == as.numeric(diet_check$AVGDEPTH[i])) {
       # set name_match to true
@@ -203,6 +205,9 @@ for (i in 1:nrow(diet_check)) {
     }
 }
 
+# use 'ifelse' to add longitude flag column to diet dataset 
+diet_check$decimalLongitude_flag <- ifelse(diet_check$lon_match == FALSE, yes = 3, no = 1)
+
 # isolate the rows that are FALSE
 coord_mismatch <- diet_check %>% filter(lon_match == FALSE | lat_match == FALSE)
 depth_mismatch <- diet_check %>% filter(depth_match == FALSE)
@@ -210,9 +215,6 @@ depth_mismatch <- diet_check %>% filter(depth_match == FALSE)
 # write csv files
 write.csv(coord_mismatch, paste0(dir, "/fish-diet/coord_mismatch.csv"), row.names = FALSE)
 write.csv(depth_mismatch, paste0(dir, "/fish-diet/depth_mismatch.csv"), row.names = FALSE)
-
-# use 'ifelse' to add longitude flag column to diet dataset 
-diet_check$decimalLongitude_flag <- ifelse(diet_check$lon_match == FALSE, yes = 3, no = 1)
 
 ## Final Adjustments --------
 
@@ -238,7 +240,7 @@ colnames(diet_EDI)[colnames(diet_EDI)=="Longitude"] <- "decimalLongitude"
 colnames(diet_EDI)[colnames(diet_EDI)=="GMT_TIME"] <- "time_UTC"
 
 # reorder columns
-diet_EDI[,c("cruise", "station", "cruise_station", "decimalLatitude", "decimalLongitude", "decimalLongitude_flag", "time_UTC", "time_local", "date", "region", "average_depth", "FishNum",  "forkLength", "abbrevName_fish", "uniqueIdentifierFish", "scientificName_fish", "scientificNameID_fish", "vernacularName", "preyTaxon", "scientificName_preyTaxon", "scientificNameID_preyTaxon", "preyCount")]
+diet_EDI <- diet_EDI[,c("cruise", "station", "cruise_station", "decimalLatitude", "decimalLongitude", "decimalLongitude_flag", "time_UTC", "time_local", "date", "region", "average_depth", "FishNum",  "forkLength", "abbrevName_fish", "uniqueIdentifierFish", "scientificName_fish", "scientificNameID_fish", "vernacularName", "preyTaxon", "scientificName_preyTaxon", "scientificNameID_preyTaxon", "preyCount")]
 
 # write the CSV file for upload to the EDI repository
 write.csv(diet_EDI, paste0(dir, "/fish-diet/nes-lter-fish-diet-2013-2015.csv"),
@@ -252,20 +254,34 @@ The Quality Assurance section investigates the differences between the Fisheries
 Check that the total counts of prey taxa per fish species aligned with the frequencies reported in Suca et al. (2018) Supplementary Material.
 ```{r}
 
-# IN PROGRESS
 # summarize total prey counts per fish gut
-diet_check <- diet_EDI %>%
-    filter(Species == "Clupea harengus") %>%
-    select(-prey_outside) %>% # eliminate preytypes below 1% threshold
-    mutate(preytotal = select(., prey_inside) %>% rowSums(na.rm = TRUE)) %>%
-    filter(preytotal != 0) # eliminate counts of zero
-  
-# isolate prey columns and convert counts to proportions
-  dietprop <- select(dietsp, prey_inside)/dietsp$preytotal
-  dietprop[dietprop == "NaN"] <- 0
+diet_freq <- diet_EDI %>%
+  select(vernacularName, preyTaxon, preyCount) %>%
+  group_by(vernacularName, preyTaxon) %>%
+  summarise(preytotal = sum(preyCount)) %>%
+  mutate(preyfreq = 100*(preytotal/sum(preytotal))) 
 
-# check to make sure that UTC and local have the expected offset of 5 hours
-tz_test <- diet_EDI %>% select(time_local, time_UTC)
+# pull out example
+diet_freq %>% filter(preyTaxon == "PPC")
+# double check: make sure the prey frequency adds up to 100% for every fish 
+diet_freq %>% filter(vernacularName == "Alewife") %>%
+  summarise(total_freq = sum(preyfreq))
+
+## Frequency of Occurence
+diet_occur <- diet_EDI %>%
+  select(vernacularName, preyTaxon) %>%
+  filter(vernacularName == "Atlantic mackerel") %>%
+  group_by(preyTaxon) %>%
+  add_tally(name = "preycount") %>%
+  mutate(freq = (preycount/389)*100)
+diet_occur <- unique(diet_occur)
+
+# Prey totals across fish species
+diet_totals <- diet_EDI %>%
+  select(vernacularName, preyCount) %>%
+  group_by(vernacularName) %>%
+  summarise(preytotal = sum(preyCount))
+# manually checked against input file
 
 ```
 
@@ -297,7 +313,7 @@ ggplot() +
   theme_classic()
 
 ```
-The diet data has failed the visual check
+The data provided by Justin contains errors in the longitude. We have investigated these occurances and included a flag column for the longitude.
 
 
 ## Construct XML for Diet Data
@@ -414,7 +430,7 @@ colnames(isotope_EDI)[colnames(isotope_EDI)=="DECDEG_BEGLON"] <- "decimalLongitu
 colnames(isotope_EDI)[colnames(isotope_EDI)=="AVGDEPTH"] <- "average_depth"
 
 # reorder columns
-isotope_EDI[,c("cruise", "station", "cruise_station", "decimalLatitude", "decimalLongitude", "decimalLongitude_flag", "time_UTC", "time_local", "date", "region", "average_depth", "FishNum",  "forkLength", "abbrevName_fish", "uniqueIdentifierFish", "scientificName_fish", "scientificNameID_fish", "vernacularName", "preyTaxon", "scientificName_preyTaxon", "scientificNameID_preyTaxon", "preyCount")]
+isotope_EDI <- isotope_EDI[,c("cruise", "station", "decimalLatitude", "decimalLongitude", "time_UTC", "date", "average_depth", "Fish_Num", "abbrevName_fish", "uniqueIdentifierFish", "scientificName_fish", "scientificNameID_fish", "vernacularName", "d13C", "d15N", "C_to_N", "d13C_corr")]
 
 # write the CSV file to new directory
 # this will be the dataset published to the EDI repository
