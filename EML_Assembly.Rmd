@@ -187,7 +187,7 @@ for (i in 1:nrow(diet_resolved)) {
 
 # Fish
 # Load stomach content data from excel sheet
-fishkey <- read_csv(paste0(dir, "/fishlookup.csv"))
+fishkey <- read_csv(paste0(dir, "/fish-lookup.csv"))
 # merge diet data with fish key
 diet_final <- left_join(x = diet_resolved, y = fishkey,
                             by=(c("Species"="abbrevName_fish")))
@@ -248,19 +248,41 @@ diet_EDI <- diet_check %>%
   
 # Rename columns as needed
 # GENERALIZE THIS STEP
-colnames(diet_EDI)[colnames(diet_EDI)=="Cruise"] <- "cruise"
-colnames(diet_EDI)[colnames(diet_EDI)=="Station"] <- "station"
-colnames(diet_EDI)[colnames(diet_EDI)=="StationID"] <- "cruise_station"
-colnames(diet_EDI)[colnames(diet_EDI)=="Station_Depth"] <- "average_depth"
-colnames(diet_EDI)[colnames(diet_EDI)=="Region"] <- "region"
-colnames(diet_EDI)[colnames(diet_EDI)=="Species"] <- "abbrevName_fish"
-colnames(diet_EDI)[colnames(diet_EDI)=="resolved_names"] <- "scientificName_preyTaxon"
-colnames(diet_EDI)[colnames(diet_EDI)=="resolved_id_fromgnr"] <- "scientificNameID_preyTaxon"
-colnames(diet_EDI)[colnames(diet_EDI)=="FL_mm"] <- "forkLength"
-colnames(diet_EDI)[colnames(diet_EDI)=="Latitude"] <- "decimalLatitude"
-colnames(diet_EDI)[colnames(diet_EDI)=="Longitude"] <- "decimalLongitude"
-# assumes that NOAA fisheries used UTC, not GMT 
-colnames(diet_EDI)[colnames(diet_EDI)=="GMT_TIME"] <- "time_UTC"
+# colnames(diet_EDI)[colnames(diet_EDI)=="Cruise"] <- "cruise"
+# colnames(diet_EDI)[colnames(diet_EDI)=="Station"] <- "station"
+# colnames(diet_EDI)[colnames(diet_EDI)=="StationID"] <- "cruise_station"
+# colnames(diet_EDI)[colnames(diet_EDI)=="Station_Depth"] <- "average_depth"
+# colnames(diet_EDI)[colnames(diet_EDI)=="Region"] <- "region"
+# colnames(diet_EDI)[colnames(diet_EDI)=="Species"] <- "abbrevName_fish"
+# colnames(diet_EDI)[colnames(diet_EDI)=="resolved_names"] <- "scientificName_preyTaxon"
+# colnames(diet_EDI)[colnames(diet_EDI)=="resolved_id_fromgnr"] <- "scientificNameID_preyTaxon"
+# colnames(diet_EDI)[colnames(diet_EDI)=="FL_mm"] <- "forkLength"
+# colnames(diet_EDI)[colnames(diet_EDI)=="Latitude"] <- "decimalLatitude"
+# colnames(diet_EDI)[colnames(diet_EDI)=="Longitude"] <- "decimalLongitude"
+# # assumes that NOAA fisheries used UTC, not GMT 
+# colnames(diet_EDI)[colnames(diet_EDI)=="GMT_TIME"] <- "time_UTC"
+
+# Rename columns as needed
+# load in column key
+columnkey <- read_csv("column-lookup.csv")
+
+# create function to loop through the column headers
+column_rename <- function(x, key) {
+  for (i in 1:length(names(x))) {
+  colname <- names(x)[i]
+  # if the column name doesn't match anything, don't rename it
+  if (is.na(match(colname, key$old)) == TRUE) {
+      i <- i + 1
+    next
+  }
+  # otherwise replace the old column name with the new
+  colnames(x)[colnames(x) == colname] <- key$new[match(colname, key$old)]
+  }
+  return(x)
+}
+
+# employ renaming function
+diet_EDI <- column_rename(x = diet_EDI, key = columnkey)
 
 # reorder columns
 diet_EDI <- diet_EDI[,c("cruise", "station", "cruise_station", "decimalLatitude", "decimalLongitude", "decimalLongitude_flag", "time_UTC", "time_local", "date", "region", "average_depth", "FishNum",  "forkLength", "abbrevName_fish", "uniqueIdentifierFish", "scientificName_fish", "scientificNameID_fish", "vernacularName", "preyTaxon", "scientificName_preyTaxon", "scientificNameID_preyTaxon", "preyCount")]
@@ -454,19 +476,22 @@ iso_fish <- left_join(x = iso_join, y = fishkey,
 ## Final Adjustments --------
 
 # reassign dataset
-isotope_EDI <- iso_fish
+# isotope_EDI <- iso_fish
 
 # Rename columns as needed
 # GENERALIZE THIS STEP
-colnames(isotope_EDI)[colnames(isotope_EDI)=="Cruise"] <- "cruise"
-colnames(isotope_EDI)[colnames(isotope_EDI)=="Station"] <- "station"
-colnames(isotope_EDI)[colnames(isotope_EDI)=="Species"] <- "abbrevName_fish"
-colnames(isotope_EDI)[colnames(isotope_EDI)=="C:N"] <- "C_to_N"
-colnames(isotope_EDI)[colnames(isotope_EDI)=="dC corr"] <- "d13C_corr"
-colnames(isotope_EDI)[colnames(isotope_EDI)=="GMT_TIME"] <- "time_UTC"
-colnames(isotope_EDI)[colnames(isotope_EDI)=="DECDEG_BEGLAT"] <- "decimalLatitude"
-colnames(isotope_EDI)[colnames(isotope_EDI)=="DECDEG_BEGLON"] <- "decimalLongitude"
-colnames(isotope_EDI)[colnames(isotope_EDI)=="AVGDEPTH"] <- "average_depth"
+# colnames(isotope_EDI)[colnames(isotope_EDI)=="Cruise"] <- "cruise"
+# colnames(isotope_EDI)[colnames(isotope_EDI)=="Station"] <- "station"
+# colnames(isotope_EDI)[colnames(isotope_EDI)=="Species"] <- "abbrevName_fish"
+# colnames(isotope_EDI)[colnames(isotope_EDI)=="C:N"] <- "C_to_N"
+# colnames(isotope_EDI)[colnames(isotope_EDI)=="dC corr"] <- "d13C_corr"
+# colnames(isotope_EDI)[colnames(isotope_EDI)=="GMT_TIME"] <- "time_UTC"
+# colnames(isotope_EDI)[colnames(isotope_EDI)=="DECDEG_BEGLAT"] <- "decimalLatitude"
+# colnames(isotope_EDI)[colnames(isotope_EDI)=="DECDEG_BEGLON"] <- "decimalLongitude"
+# colnames(isotope_EDI)[colnames(isotope_EDI)=="AVGDEPTH"] <- "average_depth"
+
+# employ renaming function to rename columns as needed
+isotope_EDI <- column_rename(x = iso_fish, key = columnkey)
 
 # reorder columns
 isotope_EDI <- isotope_EDI[,c("cruise", "station", "decimalLatitude", "decimalLongitude", "time_UTC", "date", "average_depth", "Fish_Num", "abbrevName_fish", "uniqueIdentifierFish", "scientificName_fish", "scientificNameID_fish", "vernacularName", "d13C", "d15N", "C_to_N", "d13C_corr")]
@@ -496,10 +521,7 @@ iso_check <- isotope_EDI %>%
             var_d13C = var(d13C),
             var_d15N = var(d15N),
             var_C_to_N = var(C_to_N))
-            # ymin = (mean(d13C) - std.error(d13C)),
-            # ymax = (mean(d13C) + std.error(d13C)))
 
-stderr()
 ```
 
 ## Construct XML for Stable Isotope Data

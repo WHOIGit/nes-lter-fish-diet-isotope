@@ -1,0 +1,21 @@
+﻿old,new
+Cruise,cruise
+Station,station
+StationID,cruise_station
+Latitude,decimalLatitude
+Longitude,decimalLongitude
+Time,time_local
+Region,region
+Station_Depth,average_depth
+FL_mm,forkLength
+Species,abbrevName_fish
+d13C,d13C
+d15N,d15N
+C:N,C_to_N
+dC corr,d13C_corr
+GMT_TIME,time_UTC
+DECDEG_BEGLAT,decimalLatitude
+DECDEG_BEGLON,decimalLongitude
+AVGDEPTH,average_depth
+resolved_names,scientificName_preyTaxon
+resolved_id_fromgnr,scientificNameID_preyTaxon
