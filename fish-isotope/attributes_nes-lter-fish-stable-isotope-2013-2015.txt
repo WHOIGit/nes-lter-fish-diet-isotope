@@ -5,7 +5,7 @@ decimalLatitude	Latitude of sample event	numeric	dimensionless		NA	Missing data 
 decimalLongitude	Longitude of sample event	numeric	dimensionless		NA	Missing data in fisheries dataset
 time_UTC	Time of fish collecton in UTC	Date		hh:mm:ss	NA	Missing data in fisheries dataset
 date	Date of fish collection in UTC	Date		YYYY-MM-DD	NA	Missing data in fisheries dataset
-averageDepth	Average depth of seafloor during sample event	numeric	meter		NA	Missing data in fisheries dataset
+average_depth	Average depth of seafloor during sample event	numeric	meter		NA	Missing data in fisheries dataset
 Fish_Num	Unique number for fish specimen	numeric	dimensionless			
 abbrevName_fish	Abbreviated name of fish species	character				
 uniqueIdentifierFish	Unique identifier for fish specimen	character				

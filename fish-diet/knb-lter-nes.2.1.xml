@@ -11,7 +11,7 @@
     </allow>
   </access>
   <dataset>
-    <title>NES-LTER: Diet Composition for Small Pelagic Fishes across the Northeast U.S. Continental Shelf from 2013-2015</title>
+    <title>Diet Composition for Small Pelagic Fishes across the Northeast U.S. Continental Shelf from 2013-2015</title>
     <creator>
       <individualName>
         <givenName>Justin</givenName>
@@ -59,7 +59,7 @@
       <electronicMailAddress>jawolfe@whoi.edu</electronicMailAddress>
       <role>Metadataprovider</role>
     </associatedParty>
-    <pubDate>2019-10-15</pubDate>
+    <pubDate>2019-10-16</pubDate>
     <abstract>
       <para>
   These data represent the diet composition of small pelagic fishes
@@ -123,7 +123,14 @@
         </boundingCoordinates>
       </geographicCoverage>
       <temporalCoverage>
-        <rangeOfDates/>
+        <rangeOfDates>
+          <beginDate>
+            <calendarDate>2013-03-15</calendarDate>
+          </beginDate>
+          <endDate>
+            <calendarDate>2015-11-02</calendarDate>
+          </endDate>
+        </rangeOfDates>
       </temporalCoverage>
     </coverage>
     <maintenance>
@@ -178,16 +185,22 @@
     We gathered the original spreadsheet with prey items in wide-format
     into a long-format table with preyTaxon column and corresponding
     preyCount column. GMT date and time were merged from NOAA Fisheries
-    trawl databases [provide citation for NOAA Fisheries trawl
-    databases]. Average depth was also obtained from fisheries datasets,
-    with the exception of Cruise 201504. Local time was converted to
-    hh:mm:ss format. Another column was added which contained a unique
-    identifier for each fish examined. Additional columns were added
-    which contain the vernacular name for each fish, the best matched
-    scientific name for fish and prey species from ITIS, along with
-    their corresponding taxonomic serial numbers (TSN). The data
-    cleaning and metadata template assembly was performed in R Markdown.
-    Further documentation can be found on GitHub, at
+    trawl databases (Northeast Fisheries Science Center, 2019: Fall
+    Bottom Trawl Surveys from 2013-2015. NOAA National Centers for
+    Environmental Information,
+    https://inport.nmfs.noaa.gov/inport/item/22560, Northeast Fisheries
+    Science Center, 2019: Spring Bottom Trawl Surveys from 2013-2015.
+    NOAA National Centers for Environmental Information,
+    https://inport.nmfs.noaa.gov/inport/item/22561). Average depth was
+    also obtained from fisheries datasets, with the exception of Cruise
+    201504. Local time was converted to hh:mm:ss format. Another column
+    was added which contained a unique identifier for each fish
+    examined. Additional columns were added which contain the vernacular
+    name for each fish, the best matched scientific name for fish and
+    prey species from ITIS, along with their corresponding taxonomic
+    serial numbers (TSN). The data cleaning and metadata template
+    assembly was performed in R Markdown. Further documentation can be
+    found on GitHub, at
     https://github.com/WHOIGit/nes-lter-fish-diet-isotope.
   </para>
           </section>
@@ -195,10 +208,9 @@
             <title>Quality Assurance</title>
             <para>
     We assured that the geographic and temporal coverage of the clean
-    data table were within expected ranges. We added a quality assurance
-    flag to the decimalLongitude column. We assured that the total
-    counts of prey taxa per fish species aligned with the frequencies
-    reported in Suca et al. (2018) Supplementary Material.
+    data table were within expected ranges. We added
+    decimalLongitude_flag column as a quality assurance flag to the
+    decimalLongitude column.
   </para>
           </section>
         </description>
@@ -351,9 +363,6 @@
                   <codeDefinition>
                     <code>3</code>
                     <definition>Questionable</definition>
-                  </codeDefinition>
-                  <codeDefinition>
-                    <definition>Data not available</definition>
                   </codeDefinition>
                 </enumeratedDomain>
               </nonNumericDomain>
@@ -630,8 +639,8 @@
       <entityDescription>Original fish diet dataset from the Llopiz lab</entityDescription>
       <physical>
         <objectName>Forage_Fish_Diet_Data_2013_2015_Final.xlsx</objectName>
-        <size unit="bytes">126468</size>
-        <authentication method="MD5">98e341dfb098c3b9f997b7e772eb27f7</authentication>
+        <size unit="bytes">126497</size>
+        <authentication method="MD5">caa0d68851daaf1573f6d29677efb3a4</authentication>
         <dataFormat>
           <externallyDefinedFormat>
             <formatName>unknown</formatName>

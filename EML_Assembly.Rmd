@@ -251,37 +251,46 @@ The Quality Assurance section investigates the differences between the Fisheries
 
 ## Quality Assurance: Frequency check
 
-Check that the total counts of prey taxa per fish species aligned with the frequencies reported in Suca et al. (2018) Supplementary Material.
+Check that the frequency of occurence and total counts of prey taxa per fish species aligned with the frequencies reported in Suca et al. (2018) Supplementary Material.
 ```{r}
-
-# summarize total prey counts per fish gut
-diet_freq <- diet_EDI %>%
-  select(vernacularName, preyTaxon, preyCount) %>%
-  group_by(vernacularName, preyTaxon) %>%
-  summarise(preytotal = sum(preyCount)) %>%
-  mutate(preyfreq = 100*(preytotal/sum(preytotal))) 
-
-# pull out example
-diet_freq %>% filter(preyTaxon == "PPC")
-# double check: make sure the prey frequency adds up to 100% for every fish 
-diet_freq %>% filter(vernacularName == "Alewife") %>%
-  summarise(total_freq = sum(preyfreq))
 
 ## Frequency of Occurence
 diet_occur <- diet_EDI %>%
-  select(vernacularName, preyTaxon) %>%
   filter(vernacularName == "Atlantic mackerel") %>%
-  group_by(preyTaxon) %>%
-  add_tally(name = "preycount") %>%
-  mutate(freq = (preycount/389)*100)
+  select(vernacularName, preyTaxon) %>%
+  group_by(vernacularName, preyTaxon) %>%
+  # tally the occurrance of prey taxon for give fish species 
+  add_tally(name = "preyOccurance") %>%
+  # divide the occurances by the total number of fish containing prey items
+  mutate(preyFreq = (preyOccurance/nrow(diet_EDI %>% 
+                                  filter(vernacularName == "Atlantic mackerel")))*100)
 diet_occur <- unique(diet_occur)
+# write.csv(diet_occur, paste0(dir,"/fish-diet/FreqOfOccurance.csv"), 
+#           row.names = FALSE)
+# pull out example
+# diet_occur %>% filter(preyTaxon == "Ostracoda")
 
-# Prey totals across fish species
+## Prey totals across fish species
 diet_totals <- diet_EDI %>%
   select(vernacularName, preyCount) %>%
   group_by(vernacularName) %>%
   summarise(preytotal = sum(preyCount))
 # manually checked against input file
+
+## Using the original wide-format data
+
+# IT WORKS
+# Turn this into a function, opts to enter species and prey taxon
+freq_occur <- diet %>%
+  select(Species, Euphausiacea) %>%
+  filter(Species == "A. pseudoharengus") %>%
+  filter(Euphausiacea != "0") %>% # filter out counts of zero
+  # tally the occurrance of prey taxon for give fish species 
+  add_tally(name = "preyOccurance") %>%
+  # divide the occurances by the total number of fish containing prey items
+  mutate(preyFreq = (preyOccurance/nrow(diet %>% 
+                                  filter(Species == "A. pseudoharengus")))*100)
+
 
 ```
 
@@ -298,7 +307,7 @@ nes <- map_data("state") %>% filter(long > -77)
 ggplot() +
   geom_polygon(data = nes, mapping = aes(x = long, y = lat, group = group),
                fill = NA, color = "grey50") +
-  geom_point(diet_EDI, mapping = aes(x = decimalLongitude, y = decimalLatitude, color = region),
+  geom_point(diet_final, mapping = aes(x = Longitude, y = Latitude, color = Region),
             size = 1) + 
   coord_fixed(1.3) +
   theme_classic()
@@ -307,7 +316,7 @@ ggplot() +
 ggplot() +
   geom_polygon(data = nes, mapping = aes(x = long, y = lat, group = group),
                fill = NA, color = "grey50") +
-  geom_point(diet_EDI, mapping = aes(x = DECDEG_BEGLON, y = DECDEG_BEGLAT, color = region),
+  geom_point(diet_final, mapping = aes(x = DECDEG_BEGLON, y = DECDEG_BEGLAT, color = Region),
             size = 1) + 
   coord_fixed(1.3) +
   theme_classic()
@@ -342,8 +351,8 @@ diet_csv <- "nes-lter-fish-diet-2013-2015.csv"
 
 # Determine temporal coverage for make_eml
 # define start and end date (YYYY-MM-DD)
-startdate <- min(diet_EDI$date)
-enddate <- max(diet_EDI$date)
+startdate <- min(diet_EDI$date, na.rm = TRUE)
+enddate <- max(diet_EDI$date, na.rm = TRUE)
 # temporal.coverage expects objects of 'character' class
 startdate_as_char <- as.character(startdate)
 enddate_as_char <- as.character(enddate)
@@ -359,7 +368,7 @@ West <- round(min(diet_EDI$decimalLongitude), 5)
 # for data and metadata templates co-located at path
 make_eml(path = paste0(dir,"/fish-diet"),
          data.path = paste0(dir,"/fish-diet"),
-         dataset.title = "NES-LTER: Diet Composition for Small Pelagic Fishes across the Northeast U.S. Continental Shelf from 2013-2015",
+         dataset.title = "Diet Composition for Small Pelagic Fishes across the Northeast U.S. Continental Shelf from 2013-2015",
          # data.path = data_dir,
          data.table = diet_csv,
          data.table.description = "Fish diet data cleaned for EDI",
@@ -405,12 +414,6 @@ iso_join <- unique(left_join(x = isotope, y = FSCSdataset,
 # merge fishkey columns
 iso_fish <- left_join(x = iso_join, y = fishkey,
                             by=(c("Species"="abbrevName_fish")))
-
-# Missing Values
-# isotope_missing <- isotope_EDI[is.na(isotope_EDI$date),]
-# write_csv(isotope_missing,"ISOTOPE_MIA.csv")
-# eliminate rows with missing fisheries data
-# isotope_EDI <- isotope_EDI[complete.cases(isotope_EDI[ , "date"]),]
 
 ## Final Adjustments --------
 
@@ -459,15 +462,15 @@ iso_csv <- "nes-lter-fish-stable-isotope-2013-2015.csv"
 
 ## ASSEMBLE TEMPLATES ----------
 # Import EDI templates for diet dataset licensed under CCBY
-import_templates(path = paste0(dir, "/fish-isotope"),
-                 license = "CCBY",
-                 data.files = iso_csv)
+# import_templates(path = paste0(dir, "/fish-isotope"),
+#                  license = "CCBY",
+#                  data.files = iso_csv)
 # no categorical variables for this data
                               
 # Determine temporal coverage for make_eml
 # define start and end date (YYYY-MM-DD)
-startdate <- min(isotope_EDI$date)
-enddate <- max(isotope_EDI$date)
+startdate <- min(isotope_EDI$date, na.rm = TRUE)
+enddate <- max(isotope_EDI$date, na.rm = TRUE)
 # temporal.coverage expects objects of 'character' class
 startdate_as_char <- as.character(startdate)
 enddate_as_char <- as.character(enddate)
@@ -483,7 +486,7 @@ West <- round(min(isotope_EDI$decimalLongitude), digits = 5)
 # for data and metadata templates co-located at path
 make_eml(path = paste0(dir,"/fish-isotope"),
          data.path = paste0(dir,"/fish-isotope"),
-         dataset.title = "NES-LTER: Stable Isotope Data for Small Pelagic Fishes across the Northeast U.S. Continental Shelf from 2013-2015",
+         dataset.title = "Stable Isotope Data for Small Pelagic Fishes across the Northeast U.S. Continental Shelf from 2013-2015",
          # data.path = data_dir,
          data.table = iso_csv,
          data.table.description = "Fish stable isotope dataset cleaned for EDI",
@@ -498,3 +501,11 @@ make_eml(path = paste0(dir,"/fish-isotope"),
          package.id = "nes-lter-fish-stable-isotope")
 
 ```
+
+## Try Constructing a Project Node
+
+```{r}
+# read_eml
+# write_eml
+```
+
