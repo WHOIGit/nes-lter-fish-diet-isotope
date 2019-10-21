@@ -110,10 +110,15 @@ diet$Species[diet$Species == "S. Scombrus"] <- "S. scombrus"
 # unique(diet_join$Species) # check unique fish species
 # GENERALIZE THIS STEP
 
+# add column with unique identifier for each observation
+diet$uniqueIdentifierFish <- with(diet,
+                         paste(Cruise, Station, FishNum, sub(". ", "_", Species), 
+                               sep = "_"))
+
 # look at the spreadsheet layout, data is in wide format
 # str(diet)
 
-# define prey columns to gather
+# define prey columns
 preycols <- c("Centropages spp.", "Calanus spp.","PPC", "Temora longicornis",
               "Calanoida", "Candacia spp.", "Caligus spp.", "Hyperiidea", "Phronimidae",
               "Hyperia spp.", "Parathemisto spp.", "Pronoidae", "Lycaenidae", "Mysidae",
@@ -125,24 +130,33 @@ preycols <- c("Centropages spp.", "Calanus spp.","PPC", "Temora longicornis",
               "Cladocera", "Ammodytes spp.", "Larval_Fish", "Fish_Remains", "Polychaeta",
               "Cumacea", "Isopoda", "Other", "Unknown", "Nematoscelis spp.")
 
+# Isolate fishes with empty guts
+diet_empty <- diet %>%
+  mutate(preytotal = select(., preycols) %>% rowSums(na.rm = TRUE)) %>%
+  filter(preytotal == 0) %>% # isolate rowsums of zero
+  select(-preytotal) %>%
+  gather(preyTaxon, preyCount, preycols, factor_key = TRUE)
+diet_empty$preyTaxon <- as.character(-9999) # convert prey taxon to 'missing'
+diet_empty[is.na(diet_empty)] <- 0 # convert NA preycounts to 0
+# isolate rows of unique fish
+diet_empty <- unique(diet_empty)
+
 # convert data to long format
 diet_long <- diet %>%
   gather(preyTaxon, preyCount, preycols, factor_key = TRUE) %>%
   filter(preyCount != "0") # filter out counts of zero
+# add rows of fish with empty guts
+diet_long <- rbind(diet_long, diet_empty)
 
-# add column with unique identifier for each observation
-diet_long$uniqueIdentifierFish <- with(diet_long,
-                         paste(Cruise, Station, FishNum, sub(". ", "_", Species), 
-                               sep = "_"))
-# unique(diet_EDI$uniqueFishIdentifier)
-# There's 453 unique fish identifiers
+unique(diet_long$uniqueIdentifierFish)
+# There's 501 unique fish identifiers
 
 ## Merge Info from Fisheries Data --------
 # Add fisheries geospatial info to diet data
 # Merge diet and fisheries datasets based on cruise and station
 # use unique to remove duplicate rows
-diet_join <- unique(left_join(x = diet_long, y = FSCSdataset, 
-                       by = c("Cruise" = "CRUISE6", "Station" = "STATION")))
+diet_join <- left_join(x = diet_long, y = FSCSdataset, 
+                       by = c("Cruise" = "CRUISE6", "Station" = "STATION"))
 
 # Convert the Time column to %H:%M:%S format in the diet dataset
 diet_join$time_local <- format(as.POSIXct(str_pad(diet_join$Time, 4, pad = "0"),
@@ -161,6 +175,15 @@ diet_join$preytype_stnd <- trimws(gsub('([[:upper:]])', ' \\1',
 # merge diet data with ITIS resolved names
 diet_resolved <- left_join(x = diet_join, y = itis_resolved,
                             by=(c("preytype_stnd"="Llopiz_preytypes")))
+
+# loop through rows 
+for (i in 1:nrow(diet_resolved)) {
+  if (diet_resolved$preyCount[i] == 0) {
+    diet_resolved$preyTaxon[i] <- as.character(-9999)
+    diet_resolved$resolved_names[i] <- as.character(-9999)
+    diet_resolved$resolved_id_fromgnr[i] <- as.character(-9999)
+    }
+}
 
 # Fish
 # Load stomach content data from excel sheet
@@ -255,31 +278,31 @@ Check that the frequency of occurence and total counts of prey taxa per fish spe
 ```{r}
 
 ## Frequency of Occurence
-diet_occur <- diet_EDI %>%
-  filter(vernacularName == "Atlantic mackerel") %>%
-  select(vernacularName, preyTaxon) %>%
-  group_by(vernacularName, preyTaxon) %>%
-  # tally the occurrance of prey taxon for give fish species 
-  add_tally(name = "preyOccurance") %>%
-  # divide the occurances by the total number of fish containing prey items
-  mutate(preyFreq = (preyOccurance/nrow(diet_EDI %>% 
-                                  filter(vernacularName == "Atlantic mackerel")))*100)
-diet_occur <- unique(diet_occur)
-# write.csv(diet_occur, paste0(dir,"/fish-diet/FreqOfOccurance.csv"), 
-#           row.names = FALSE)
-# pull out example
-# diet_occur %>% filter(preyTaxon == "Ostracoda")
-
-## Prey totals across fish species
-diet_totals <- diet_EDI %>%
-  select(vernacularName, preyCount) %>%
-  group_by(vernacularName) %>%
-  summarise(preytotal = sum(preyCount))
+# diet_occur <- diet_EDI %>%
+#   filter(vernacularName == "Atlantic mackerel") %>%
+#   select(vernacularName, preyTaxon) %>%
+#   group_by(vernacularName, preyTaxon) %>%
+#   # tally the occurrance of prey taxon for give fish species 
+#   add_tally(name = "preyOccurance") %>%
+#   # divide the occurances by the total number of fish containing prey items
+#   mutate(preyFreq = (preyOccurance/nrow(diet_EDI %>% 
+#                                   filter(vernacularName == "Atlantic mackerel")))*100)
+# diet_occur <- unique(diet_occur)
+# # write.csv(diet_occur, paste0(dir,"/fish-diet/FreqOfOccurance.csv"), 
+# #           row.names = FALSE)
+# # pull out example
+# # diet_occur %>% filter(preyTaxon == "Ostracoda")
+# 
+# ## Prey totals across fish species
+# diet_totals <- diet_EDI %>%
+#   select(vernacularName, preyCount) %>%
+#   group_by(vernacularName) %>%
+#   summarise(preytotal = sum(preyCount))
 # manually checked against input file
 
 ## Using the original wide-format data
 
-# IT WORKS
+# Check against the prey totals listed in the supplementary data
 # Turn this into a function, opts to enter species and prey taxon
 freq_occur <- diet %>%
   select(Species, Euphausiacea) %>%
@@ -291,7 +314,19 @@ freq_occur <- diet %>%
   mutate(preyFreq = (preyOccurance/nrow(diet %>% 
                                   filter(Species == "A. pseudoharengus")))*100)
 
+# Determine number of unique fish identifiers per fish species 
+fish <- fishkey$abbrevName_fish
 
+for (i in 1:length(fish)) {
+  fish_tally <- diet_EDI %>%
+  filter(abbrevName_fish == fish[i]) %>%
+  select(uniqueIdentifierFish) %>%
+  # tally the occurrance of fish species
+  add_tally(name = "tally") 
+  
+print(paste0("Unique observations for ", fish[i], ": ", nrow(unique(fish_tally))))
+}
+# we lost unique fish in the conversion from wide to long
 ```
 
 ## Mapping the Data
@@ -359,10 +394,10 @@ enddate_as_char <- as.character(enddate)
 
 # Determine geographic coverage for make_eml
 # round to 5 decimal places
-North <- round(max(diet_EDI$decimalLatitude), 5)
-East <- round(max(diet_EDI$decimalLongitude), 5)
-South <- round(min(diet_EDI$decimalLatitude), 5)
-West <- round(min(diet_EDI$decimalLongitude), 5)
+North <- round(max(diet_EDI$decimalLatitude, na.rm = TRUE), 5)
+East <- round(max(diet_EDI$decimalLongitude, na.rm = TRUE), 5)
+South <- round(min(diet_EDI$decimalLatitude, na.rm = TRUE), 5)
+West <- round(min(diet_EDI$decimalLongitude, na.rm = TRUE), 5)
 
 # MAKE EML -----------
 # for data and metadata templates co-located at path
@@ -380,7 +415,7 @@ make_eml(path = paste0(dir,"/fish-diet"),
          maintenance.description = "completed", 
          user.id = "NES",
          user.domain = "LTER",
-         package.id = "knb-lter-nes.2.1")
+         package.id = "knb-lter-nes.2.2")
 
 ```
 
@@ -411,6 +446,7 @@ isotope$uniqueIdentifierFish <- with(isotope,
 # merge fisheries columns (geospatial, temporal, depth info)
 iso_join <- unique(left_join(x = isotope, y = FSCSdataset, 
                        by = c("Cruise" = "CRUISE6", "Station" = "STATION")))
+iso_join$AVGDEPTH <- as.numeric(iso_join$AVGDEPTH)
 # merge fishkey columns
 iso_fish <- left_join(x = iso_join, y = fishkey,
                             by=(c("Species"="abbrevName_fish")))
@@ -446,7 +482,24 @@ write.csv(isotope_EDI, paste0(dir, "/fish-isotope/nes-lter-fish-stable-isotope-2
 
 This chunk will inspect the isotope data to make sure it aligns statistically with the expected mean and standard deviation.
 ```{r}
+str(isotope_EDI)
+var(isotope_EDI$d13C)
+var(isotope_EDI$d15N)
+var(isotope_EDI$C_to_N)
+var(isotope_EDI$d13C_corr)
 
+iso_check <- isotope_EDI %>%
+  select(d13C, d15N, C_to_N) %>%
+  summarise(mean_d13C = mean(d13C),
+            mean_d15N = mean(d15N),
+            mean_C_to_N = mean(C_to_N),
+            var_d13C = var(d13C),
+            var_d15N = var(d15N),
+            var_C_to_N = var(C_to_N))
+            # ymin = (mean(d13C) - std.error(d13C)),
+            # ymax = (mean(d13C) + std.error(d13C)))
+
+stderr()
 ```
 
 ## Construct XML for Stable Isotope Data
@@ -477,10 +530,10 @@ enddate_as_char <- as.character(enddate)
 
 # Determine geographic coverage for make_eml
 # round to 5 decimal places
-North <- round(max(isotope_EDI$decimalLatitude), digits = 5)
-East <- round(max(isotope_EDI$decimalLongitude), digits = 5)
-South <- round(min(isotope_EDI$decimalLatitude), digits = 5)
-West <- round(min(isotope_EDI$decimalLongitude), digits = 5)
+North <- round(max(isotope_EDI$decimalLatitude, na.rm = TRUE), digits = 5)
+East <- round(max(isotope_EDI$decimalLongitude, na.rm = TRUE), digits = 5)
+South <- round(min(isotope_EDI$decimalLatitude, na.rm = TRUE), digits = 5)
+West <- round(min(isotope_EDI$decimalLongitude, na.rm = TRUE), digits = 5)
 
 # MAKE EML -------------
 # for data and metadata templates co-located at path
@@ -498,14 +551,42 @@ make_eml(path = paste0(dir,"/fish-isotope"),
          maintenance.description = "completed", 
          user.id = "NES",
          user.domain = "LTER",
-         package.id = "nes-lter-fish-stable-isotope")
+         package.id = "knb-lter-nes.3.1")
 
 ```
 
-## Try Constructing a Project Node
+## Insert Custom Project Node
+
+Write a generalized function for replacing a node of xml
+
+Step 1: Read in the xml file and the replacement xml chunk
+Step 2: Delete/replace the node of interest
+Step 3: Write the modified xml file 
 
 ```{r}
-# read_eml
-# write_eml
+# install.packages("xml2")
+library(xml2)
+
+proj <- read_xml("project.txt", from = "xml")
+
+iso_eml <- read_eml(paste0(dir, "/fish-isotope/knb-lter-nes.3.1.xml"), from = "xml")
+iso_proj <- iso_eml[[4]]$project
+eml_validate(iso_eml)
+
+xml_add_parent(iso_eml, iso_proj)
+
+# iso_eml[[4]]$project
+
+
+x <- read_xml("<parent><child>1</child><child>2<child>3</child></child></parent>")
+children <- xml_children(x)
+t1 <- children[[1]]
+t2 <- children[[2]]
+t3 <- xml_children(children[[2]])[[1]]
+
+xml_replace(t1, t3)
+#> {xml_node}
+#> <child>
+x
 ```
 
