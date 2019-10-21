@@ -416,6 +416,7 @@
 201302,220,"201302-220",41.9230183333333,-69.3269133333333,1,22:31:35,"17:31:00",2013-04-11,"GoM",198,92,187,"C. harengus","201302_220_92_C_harengus","Clupea harengus",161722,"Atlantic herring","Hyperia spp.","Hyperia",95109,2
 201302,128,"201302-128",39.51353,-72.42392,1,07:17:38,"02:17:00",2013-03-28,"SNE",142,106,120,"P. triacanthus","201302_128_106_P_triacanthus","Peprilus triacanthus",172567,"Atlantic butterfish","Hyperia spp.","Hyperia",95109,4
 201302,128,"201302-128",39.51353,-72.42392,1,07:17:38,"02:17:00",2013-03-28,"SNE",142,108,85,"P. triacanthus","201302_128_108_P_triacanthus","Peprilus triacanthus",172567,"Atlantic butterfish","Hyperia spp.","Hyperia",95109,2
+201302,128,"201302-128",39.51353,-72.42392,1,07:17:38,"02:17:00",2013-03-28,"SNE",142,108,85,"P. triacanthus","201302_128_108_P_triacanthus","Peprilus triacanthus",172567,"Atlantic butterfish","Hyperia spp.","Hyperia",95109,2
 201302,6,"201302-6",38.3000566666667,-74.1274366666667,1,02:08:57,"21:08:00",2013-03-16,"MAB",61,115,121,"P. triacanthus","201302_6_115_P_triacanthus","Peprilus triacanthus",172567,"Atlantic butterfish","Hyperia spp.","Hyperia",95109,1
 201302,218,"201302-218",41.90631,-69.80113,1,15:14:24,"10:14:00",2013-04-11,"GoM",101,33,195,"S. scombrus","201302_218_33_S_scombrus","Scomber scombrus",172414,"Atlantic mackerel","Hyperia spp.","Hyperia",95109,19
 201302,218,"201302-218",41.90631,-69.80113,1,15:14:24,"10:14:00",2013-04-11,"GoM",101,36,215,"S. scombrus","201302_218_36_S_scombrus","Scomber scombrus",172414,"Atlantic mackerel","Hyperia spp.","Hyperia",95109,4
@@ -518,6 +519,7 @@
 201302,121,"201302-121",39.6712433333333,-73.2914583333333,1,16:12:43,"11:12:00",2013-03-27,"SNE",42,86,180,"C. harengus","201302_121_86_C_harengus","Clupea harengus",161722,"Atlantic herring","Parathemisto spp.","Parathemisto",95148,40
 201302,7,"201302-7",38.0490483333333,-73.9953866666667,1,05:26:18,"00:26:00",2013-03-16,"MAB",113,13,108,"P. triacanthus","201302_7_13_P_triacanthus","Peprilus triacanthus",172567,"Atlantic butterfish","Parathemisto spp.","Parathemisto",95148,8
 201302,130,"201302-130",39.698105,-72.019515,1,12:40:43,"07:40:00",2013-03-28,"SNE",159,64,166,"P. triacanthus","201302_130_64_P_triacanthus","Peprilus triacanthus",172567,"Atlantic butterfish","Parathemisto spp.","Parathemisto",95148,3
+201302,128,"201302-128",39.51353,-72.42392,1,07:17:38,"02:17:00",2013-03-28,"SNE",142,108,85,"P. triacanthus","201302_128_108_P_triacanthus","Peprilus triacanthus",172567,"Atlantic butterfish","Parathemisto spp.","Parathemisto",95148,23
 201302,128,"201302-128",39.51353,-72.42392,1,07:17:38,"02:17:00",2013-03-28,"SNE",142,108,85,"P. triacanthus","201302_128_108_P_triacanthus","Peprilus triacanthus",172567,"Atlantic butterfish","Parathemisto spp.","Parathemisto",95148,23
 201302,252,"201302-252",40.65459,-67.1234233333333,1,10:00:51,"05:00:00",2013-04-15,"GB",116,122,148,"P. triacanthus","201302_252_122_P_triacanthus","Peprilus triacanthus",172567,"Atlantic butterfish","Parathemisto spp.","Parathemisto",95148,1
 201302,218,"201302-218",41.90631,-69.80113,1,15:14:24,"10:14:00",2013-04-11,"GoM",101,33,195,"S. scombrus","201302_218_33_S_scombrus","Scomber scombrus",172414,"Atlantic mackerel","Parathemisto spp.","Parathemisto",95148,24
@@ -1040,6 +1042,7 @@
 201302,121,"201302-121",39.6712433333333,-73.2914583333333,1,16:12:43,"11:12:00",2013-03-27,"SNE",42,86,180,"C. harengus","201302_121_86_C_harengus","Clupea harengus",161722,"Atlantic herring","Other",NA,NA,3
 201302,121,"201302-121",39.6712433333333,-73.2914583333333,1,16:12:43,"11:12:00",2013-03-27,"SNE",42,87,170,"C. harengus","201302_121_87_C_harengus","Clupea harengus",161722,"Atlantic herring","Other",NA,NA,15
 201302,128,"201302-128",39.51353,-72.42392,1,07:17:38,"02:17:00",2013-03-28,"SNE",142,108,85,"P. triacanthus","201302_128_108_P_triacanthus","Peprilus triacanthus",172567,"Atlantic butterfish","Other",NA,NA,1
+201302,128,"201302-128",39.51353,-72.42392,1,07:17:38,"02:17:00",2013-03-28,"SNE",142,108,85,"P. triacanthus","201302_128_108_P_triacanthus","Peprilus triacanthus",172567,"Atlantic butterfish","Other",NA,NA,1
 201302,24,"201302-24",36.6378716666667,-74.9392883333333,1,17:29:10,"12:29:00",2013-03-17,"MAB",30,18,277,"S. scombrus","201302_24_18_S_scombrus","Scomber scombrus",172414,"Atlantic mackerel","Other",NA,NA,3
 201302,69,"201302-69",37.05521,-75.379185,1,21:55:00,"16:55:00",2013-03-21,"MAB",29,42,245,"S. scombrus","201302_69_42_S_scombrus","Scomber scombrus",172414,"Atlantic mackerel","Other",NA,NA,20
 201302,315,"201302-315",43.6628383333333,-67.043225,1,03:08:07,"22:08:00",2013-04-23,"GoM",151,99,250,"S. scombrus","201302_315_99_S_scombrus","Scomber scombrus",172414,"Atlantic mackerel","Other",NA,NA,1
@@ -1089,6 +1092,7 @@
 201302,241,"201302-241",40.4040083333333,-67.8672,1,08:15:02,"03:15:00",2013-04-14,"GB",235,102,149,"P. triacanthus","201302_241_102_P_triacanthus","Peprilus triacanthus",172567,"Atlantic butterfish","Unknown",NA,NA,1
 201302,241,"201302-241",40.4040083333333,-67.8672,1,08:15:02,"03:15:00",2013-04-14,"GB",235,104,154,"P. triacanthus","201302_241_104_P_triacanthus","Peprilus triacanthus",172567,"Atlantic butterfish","Unknown",NA,NA,1
 201302,237,"201302-237",40.5809333333333,-68.1186433333333,1,22:28:08,"17:28:00",2013-04-13,"GB",95,105,125,"P. triacanthus","201302_237_105_P_triacanthus","Peprilus triacanthus",172567,"Atlantic butterfish","Unknown",NA,NA,1
+201302,128,"201302-128",39.51353,-72.42392,1,07:17:38,"02:17:00",2013-03-28,"SNE",142,108,85,"P. triacanthus","201302_128_108_P_triacanthus","Peprilus triacanthus",172567,"Atlantic butterfish","Unknown",NA,NA,1
 201302,128,"201302-128",39.51353,-72.42392,1,07:17:38,"02:17:00",2013-03-28,"SNE",142,108,85,"P. triacanthus","201302_128_108_P_triacanthus","Peprilus triacanthus",172567,"Atlantic butterfish","Unknown",NA,NA,1
 201302,330,"201302-330",43.8092483333333,-68.2178416666667,1,21:01:59,"16:01:00",2013-04-24,"GoM",183,110,138,"P. triacanthus","201302_330_110_P_triacanthus","Peprilus triacanthus",172567,"Atlantic butterfish","Unknown",NA,NA,1
 201302,330,"201302-330",43.8092483333333,-68.2178416666667,1,21:01:59,"16:01:00",2013-04-24,"GoM",183,112,147,"P. triacanthus","201302_330_112_P_triacanthus","Peprilus triacanthus",172567,"Atlantic butterfish","Unknown",NA,NA,1
