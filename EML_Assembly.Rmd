@@ -285,30 +285,6 @@ The Quality Assurance section investigates the differences between the Fisheries
 
 Check that the frequency of occurence and total counts of prey taxa per fish species aligned with the frequencies reported in Suca et al. (2018) Supplementary Material.
 ```{r}
-
-## Frequency of Occurence
-# diet_occur <- diet_EDI %>%
-#   filter(vernacularName == "Atlantic mackerel") %>%
-#   select(vernacularName, preyTaxon) %>%
-#   group_by(vernacularName, preyTaxon) %>%
-#   # tally the occurrance of prey taxon for give fish species 
-#   add_tally(name = "preyOccurance") %>%
-#   # divide the occurances by the total number of fish containing prey items
-#   mutate(preyFreq = (preyOccurance/nrow(diet_EDI %>% 
-#                                   filter(vernacularName == "Atlantic mackerel")))*100)
-# diet_occur <- unique(diet_occur)
-# # write.csv(diet_occur, paste0(dir,"/fish-diet/FreqOfOccurance.csv"), 
-# #           row.names = FALSE)
-# # pull out example
-# # diet_occur %>% filter(preyTaxon == "Ostracoda")
-# 
-# ## Prey totals across fish species
-# diet_totals <- diet_EDI %>%
-#   select(vernacularName, preyCount) %>%
-#   group_by(vernacularName) %>%
-#   summarise(preytotal = sum(preyCount))
-# manually checked against input file
-
 ## Using the original wide-format data
 
 # Check against the prey totals listed in the supplementary data
@@ -337,6 +313,31 @@ print(paste0("Unique observations for ", fish[i], ": ", nrow(unique(fish_tally))
 }
 # we lost unique fish in the conversion from wide to long
 # UPDATE: code modified to retain unique fish with empty guts
+
+# Additional data summaries
+# Frequency of Occurence
+# diet_occur <- diet_EDI %>%
+#   filter(vernacularName == "Atlantic mackerel") %>%
+#   select(vernacularName, preyTaxon) %>%
+#   group_by(vernacularName, preyTaxon) %>%
+#   # tally the occurrance of prey taxon for give fish species 
+#   add_tally(name = "preyOccurance") %>%
+#   # divide the occurances by the total number of fish containing prey items
+#   mutate(preyFreq = (preyOccurance/nrow(diet_EDI %>% 
+#                                   filter(vernacularName == "Atlantic mackerel")))*100)
+# diet_occur <- unique(diet_occur)
+# # write.csv(diet_occur, paste0(dir,"/fish-diet/FreqOfOccurance.csv"), 
+# #           row.names = FALSE)
+# # pull out example
+# # diet_occur %>% filter(preyTaxon == "Ostracoda")
+# 
+# ## Prey totals across fish species
+# diet_totals <- diet_EDI %>%
+#   select(vernacularName, preyCount) %>%
+#   group_by(vernacularName) %>%
+#   summarise(preytotal = sum(preyCount))
+# manually checked against input file
+
 ```
 
 ## Mapping the Data
@@ -481,18 +482,17 @@ write.csv(isotope_EDI, paste0(dir, "/fish-isotope/nes-lter-fish-stable-isotope-2
 This chunk will inspect the isotope data to make sure it aligns statistically with the expected mean and standard deviation.
 ```{r}
 
+# isolate isotope columns 
+isotopes <- isotope_EDI %>%
+  select(d13C, d15N, C_to_N, d13C_corr)
 # compute summary stats
-iso_check <- isotope_EDI %>%
-  select(d13C, d15N, C_to_N, d13C_corr) %>%
-  summarise(mean_d13C = mean(d13C),
-            mean_d15N = mean(d15N),
-            mean_C_to_N = mean(C_to_N),
-            mean_d13C_corr = mean(d13C_corr),
-            min_d13C = min(d13C),
-            min_d15N = min(d15N),
-            min_C_to_N = min(C_to_N),
-            min_d13C_corr = min(d13C_corr))
+isotope_check <- data.frame(rbind(apply(isotopes, 2, mean), 
+                         apply(isotopes, 2, min), 
+                         apply(isotopes, 2, max)),
+                   row.names = c("mean", "min", "max"))
 
+# export isotope quality check
+write.csv(isotope_check, "isotope_QAC.csv", row.names = FALSE)
 ```
 
 ## Construct XML for Stable Isotope Data
@@ -603,8 +603,8 @@ eml_validate(diet_eml)
 eml_validate(iso_eml)
 
 # write modified xml file
-# write_xml(diet_eml_final, paste0(dir, "/fish-diet/knb-lter-nes.2.2.xml"))
-# write_xml(iso_eml_final, paste0(dir, "/fish-isotope/knb-lter-nes.3.1.xml"))
+write_xml(diet_eml_final, paste0(dir, "/fish-diet/knb-lter-nes.2.2.xml"))
+write_xml(iso_eml_final, paste0(dir, "/fish-isotope/knb-lter-nes.3.1.xml"))
 
 ```
 
