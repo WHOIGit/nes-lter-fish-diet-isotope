@@ -488,10 +488,10 @@ iso_check <- isotope_EDI %>%
             mean_d15N = mean(d15N),
             mean_C_to_N = mean(C_to_N),
             mean_d13C_corr = mean(d13C_corr),
-            var_d13C = var(d13C),
-            var_d15N = var(d15N),
-            var_C_to_N = var(C_to_N),
-            var_d13C_corr = var(d13C_corr))
+            min_d13C = min(d13C),
+            min_d15N = min(d15N),
+            min_C_to_N = min(C_to_N),
+            min_d13C_corr = min(d13C_corr))
 
 ```
 
@@ -550,10 +550,10 @@ make_eml(path = paste0(dir,"/fish-isotope"),
 
 ## Insert Custom Project Node
 
-IN PROGRESS: Code will be generalized to for replacing any chosen node of an xml file
+ANY CHANGES TO THE XML FILE MUST BE PUSHED TO GITHUB BEFORE RUNNING THIS CHUNK
 
-Step 1: Read in the xml file and the replacement xml chunk
-Step 2: Delete/replace the node of interest
+Step 1: Read in the xml file and the new xml node
+Step 2: Insert the new node or replace the old node with the new node
 Step 3: Write the modified xml file 
 
 Instructions for node replacement using the xml2 package can be found [here](https://cran.r-project.org/web/packages/xml2/vignettes/modification.html).
@@ -563,27 +563,48 @@ Instructions for node replacement using the xml2 package can be found [here](htt
 library(xml2)
 
 # read in project node
-proj_eml <- read_xml("parent_project.txt", from = "xml")
+project_eml <- read_xml("parent_project.txt", from = "xml")
 
-# read in diet xml file exported by make_eml
+# read in xml files exported by make_eml
+# diet data
 diet_eml <- read_xml("https://raw.githubusercontent.com/WHOIGit/nes-lter-fish-diet-isotope/master/fish-diet/knb-lter-nes.2.2.xml", from  = "xml")
-# both objects should be of class c("xml_document" "xml_node")
+# isotope data
+iso_eml <- read_xml("https://raw.githubusercontent.com/WHOIGit/nes-lter-fish-diet-isotope/master/fish-isotope/knb-lter-nes.3.1.xml", from  = "xml")
+# all objects should be of class c("xml_document" "xml_node")
 
-# isolate old node (Currently hardcoded)
-diet_children <- xml_children(diet_eml)
-oldnode <- xml_children(diet_children[[2]])[[16]] # loc 16 is the project node
-# designate new node
-newnode <- proj_eml
-# replace project node
-xml_replace(oldnode, newnode)
+# Function to replace an existant node with a new node in an xml document
+node_replacement <- function(x, newnode) {
+  # find old project node
+  oldnode <- xml_find_first(x, ".//project") # find project node
+  # replace with new project node
+  xml_replace(oldnode, newnode)
+  return(x)
+}
 
-# write modified xml file
-write_xml(diet_eml, paste0(dir, "/fish-diet/knb-lter-nes.2.2.xml"))
+# Function to insert a new node into an xml document
+node_insert <- function(x, newnode) {
+  # find methods node
+  methodsnode <- xml_find_first(x, ".//methods")
+  # add project node after methods and before dataTable
+  xml_add_sibling(methodsnode, newnode, where = "after")
+  return(x)
+}
 
-# check that the node was replaced
-xml_children(diet_children[[2]])[[16]]
+# make the neccessary modifications
+diet_eml_final <- node_insert(diet_eml, project_eml)
+iso_eml_final <- node_insert(iso_eml, project_eml)
+
+# check nodes
+xml_children(xml_children(diet_eml_final)[[2]])
+xml_children(xml_children(iso_eml_final)[[2]])
+
 # check that the file is still valid
 eml_validate(diet_eml)
+eml_validate(iso_eml)
+
+# write modified xml file
+# write_xml(diet_eml_final, paste0(dir, "/fish-diet/knb-lter-nes.2.2.xml"))
+# write_xml(iso_eml_final, paste0(dir, "/fish-isotope/knb-lter-nes.3.1.xml"))
 
 ```
 

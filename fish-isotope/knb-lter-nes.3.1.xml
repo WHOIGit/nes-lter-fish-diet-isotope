@@ -24,6 +24,26 @@
     </creator>
     <associatedParty>
       <individualName>
+        <givenName>Joel</givenName>
+        <givenName>K</givenName>
+        <surName>Llopiz</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>jllopiz@whoi.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0002-7584-7471</userId>
+      <role>Principal Investigator</role>
+    </associatedParty>
+    <associatedParty>
+      <individualName>
+        <givenName>David</givenName>
+        <givenName>E</givenName>
+        <surName>Richardson</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <role>Principal Investigator</role>
+    </associatedParty>
+    <associatedParty>
+      <individualName>
         <givenName>Julie</givenName>
         <givenName>W</givenName>
         <surName>Pringle</surName>
@@ -219,34 +239,6 @@
         </description>
       </methodStep>
     </methods>
-    <project>
-      <title>No project title to report</title>
-      <personnel>
-        <individualName>
-          <givenName>David</givenName>
-          <givenName>E</givenName>
-          <surName>Richardson</surName>
-        </individualName>
-        <organizationName>Northeast U.S. Shelf LTER</organizationName>
-        <role>Principal Investigator</role>
-      </personnel>
-      <funding>NSF: OCE-1655690</funding>
-      <relatedProject>
-        <title>Northeast U.S. Shelf LTER</title>
-        <personnel>
-          <individualName>
-            <givenName>Joel</givenName>
-            <givenName>K</givenName>
-            <surName>Llopiz</surName>
-          </individualName>
-          <organizationName>Northeast U.S. Shelf LTER</organizationName>
-          <electronicMailAddress>jllopiz@whoi.edu</electronicMailAddress>
-          <userId directory="https://orcid.org">https://orcid.org/0000-0002-7584-7471</userId>
-          <role>Principal Investigator</role>
-        </personnel>
-        <funding>NSF: OCE-1655691</funding>
-      </relatedProject>
-    </project>
     <dataTable>
       <entityName>Fish stable isotope dataset cleaned for EDI</entityName>
       <entityDescription>Fish stable isotope dataset cleaned for EDI</entityDescription>
@@ -571,8 +563,8 @@
       <entityDescription>Original fish stable isotope datasheet from the Llopiz lab</entityDescription>
       <physical>
         <objectName>Forage_Fish_Stable_Isotope_Data_2013_2015_Final.xlsx</objectName>
-        <size unit="bytes">57675</size>
-        <authentication method="MD5">df3adf1154d6fc779bc6ec7f06049f30</authentication>
+        <size unit="bytes">57702</size>
+        <authentication method="MD5">d40bddfee3048baf51dd7d796200ad05</authentication>
         <dataFormat>
           <externallyDefinedFormat>
             <formatName>unknown</formatName>
