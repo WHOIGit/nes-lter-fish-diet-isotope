@@ -103,12 +103,16 @@ diet_xls <- "Forage_Fish_Diet_Data_2013_2015_Final.xlsx"
 # Load stomach content data from excel sheet
 diet <- read_excel(path = paste0(dir, "/fish-diet/", diet_xls), 
                   sheet = 1, na = "NA")
+# check for duplicate rows
+diet_unique <- unique(diet)
+# There is one duplicated row in the data
+diet <- diet_unique
 
+# GENERALIZE THIS STEP
 # Problem: "S. scombrus" and "S. Scombrus" both exist in the dataset
 # standardize the naming scheme
 diet$Species[diet$Species == "S. Scombrus"] <- "S. scombrus"
 # unique(diet_join$Species) # check unique fish species
-# GENERALIZE THIS STEP
 
 # add column with unique identifier for each observation
 diet$uniqueIdentifierFish <- with(diet,
@@ -130,7 +134,7 @@ preycols <- c("Centropages spp.", "Calanus spp.","PPC", "Temora longicornis",
               "Cladocera", "Ammodytes spp.", "Larval_Fish", "Fish_Remains", "Polychaeta",
               "Cumacea", "Isopoda", "Other", "Unknown", "Nematoscelis spp.")
 
-# Isolate fishes with empty guts
+# isolate fishes with empty guts
 diet_empty <- diet %>%
   mutate(preytotal = select(., preycols) %>% rowSums(na.rm = TRUE)) %>%
   filter(preytotal == 0) %>% # isolate rowsums of zero
@@ -147,9 +151,6 @@ diet_long <- diet %>%
   filter(preyCount != "0") # filter out counts of zero
 # add rows of fish with empty guts
 diet_long <- rbind(diet_long, diet_empty)
-
-unique(diet_long$uniqueIdentifierFish)
-# There's 501 unique fish identifiers
 
 ## Merge Info from Fisheries Data --------
 # Add fisheries geospatial info to diet data
@@ -176,6 +177,7 @@ diet_join$preytype_stnd <- trimws(gsub('([[:upper:]])', ' \\1',
 diet_resolved <- left_join(x = diet_join, y = itis_resolved,
                             by=(c("preytype_stnd"="Llopiz_preytypes")))
 
+# assign missing values for empty fish guts
 # loop through rows 
 for (i in 1:nrow(diet_resolved)) {
   if (diet_resolved$preyCount[i] == 0) {
@@ -246,22 +248,6 @@ diet_EDI <- diet_check %>%
   select(-Time, -DECDEG_BEGLAT, -DECDEG_BEGLON, -AVGDEPTH, 
          -preytype_stnd, -lon_match, -lat_match, -depth_match)
   
-# Rename columns as needed
-# GENERALIZE THIS STEP
-# colnames(diet_EDI)[colnames(diet_EDI)=="Cruise"] <- "cruise"
-# colnames(diet_EDI)[colnames(diet_EDI)=="Station"] <- "station"
-# colnames(diet_EDI)[colnames(diet_EDI)=="StationID"] <- "cruise_station"
-# colnames(diet_EDI)[colnames(diet_EDI)=="Station_Depth"] <- "average_depth"
-# colnames(diet_EDI)[colnames(diet_EDI)=="Region"] <- "region"
-# colnames(diet_EDI)[colnames(diet_EDI)=="Species"] <- "abbrevName_fish"
-# colnames(diet_EDI)[colnames(diet_EDI)=="resolved_names"] <- "scientificName_preyTaxon"
-# colnames(diet_EDI)[colnames(diet_EDI)=="resolved_id_fromgnr"] <- "scientificNameID_preyTaxon"
-# colnames(diet_EDI)[colnames(diet_EDI)=="FL_mm"] <- "forkLength"
-# colnames(diet_EDI)[colnames(diet_EDI)=="Latitude"] <- "decimalLatitude"
-# colnames(diet_EDI)[colnames(diet_EDI)=="Longitude"] <- "decimalLongitude"
-# # assumes that NOAA fisheries used UTC, not GMT 
-# colnames(diet_EDI)[colnames(diet_EDI)=="GMT_TIME"] <- "time_UTC"
-
 # Rename columns as needed
 # load in column key
 columnkey <- read_csv("column-lookup.csv")
@@ -349,6 +335,7 @@ for (i in 1:length(fish)) {
 print(paste0("Unique observations for ", fish[i], ": ", nrow(unique(fish_tally))))
 }
 # we lost unique fish in the conversion from wide to long
+# UPDATE: code modified to retain unique fish with empty guts
 ```
 
 ## Mapping the Data
@@ -475,21 +462,6 @@ iso_fish <- left_join(x = iso_join, y = fishkey,
 
 ## Final Adjustments --------
 
-# reassign dataset
-# isotope_EDI <- iso_fish
-
-# Rename columns as needed
-# GENERALIZE THIS STEP
-# colnames(isotope_EDI)[colnames(isotope_EDI)=="Cruise"] <- "cruise"
-# colnames(isotope_EDI)[colnames(isotope_EDI)=="Station"] <- "station"
-# colnames(isotope_EDI)[colnames(isotope_EDI)=="Species"] <- "abbrevName_fish"
-# colnames(isotope_EDI)[colnames(isotope_EDI)=="C:N"] <- "C_to_N"
-# colnames(isotope_EDI)[colnames(isotope_EDI)=="dC corr"] <- "d13C_corr"
-# colnames(isotope_EDI)[colnames(isotope_EDI)=="GMT_TIME"] <- "time_UTC"
-# colnames(isotope_EDI)[colnames(isotope_EDI)=="DECDEG_BEGLAT"] <- "decimalLatitude"
-# colnames(isotope_EDI)[colnames(isotope_EDI)=="DECDEG_BEGLON"] <- "decimalLongitude"
-# colnames(isotope_EDI)[colnames(isotope_EDI)=="AVGDEPTH"] <- "average_depth"
-
 # employ renaming function to rename columns as needed
 isotope_EDI <- column_rename(x = iso_fish, key = columnkey)
 
@@ -507,12 +479,8 @@ write.csv(isotope_EDI, paste0(dir, "/fish-isotope/nes-lter-fish-stable-isotope-2
 
 This chunk will inspect the isotope data to make sure it aligns statistically with the expected mean and standard deviation.
 ```{r}
-str(isotope_EDI)
-var(isotope_EDI$d13C)
-var(isotope_EDI$d15N)
-var(isotope_EDI$C_to_N)
-var(isotope_EDI$d13C_corr)
 
+# compute summary stats
 iso_check <- isotope_EDI %>%
   select(d13C, d15N, C_to_N) %>%
   summarise(mean_d13C = mean(d13C),
@@ -579,36 +547,40 @@ make_eml(path = paste0(dir,"/fish-isotope"),
 
 ## Insert Custom Project Node
 
-Write a generalized function for replacing a node of xml
+IN PROGRESS: Code will be generalized to for replacing any chosen node of an xml file
 
 Step 1: Read in the xml file and the replacement xml chunk
 Step 2: Delete/replace the node of interest
 Step 3: Write the modified xml file 
 
+Instructions for node replacement using the xml2 package can be found [here](https://cran.r-project.org/web/packages/xml2/vignettes/modification.html).
+
 ```{r}
 # install.packages("xml2")
 library(xml2)
 
-proj <- read_xml("project.txt", from = "xml")
+# read in project node
+proj_eml <- read_xml("parent_project.txt", from = "xml")
 
-iso_eml <- read_eml(paste0(dir, "/fish-isotope/knb-lter-nes.3.1.xml"), from = "xml")
-iso_proj <- iso_eml[[4]]$project
-eml_validate(iso_eml)
+# read in diet xml file exported by make_eml
+diet_eml <- read_xml("https://raw.githubusercontent.com/WHOIGit/nes-lter-fish-diet-isotope/master/fish-diet/knb-lter-nes.2.1.xml", from  = "xml")
+# both objects should be of class c("xml_document" "xml_node")
 
-xml_add_parent(iso_eml, iso_proj)
+# isolate old node
+diet_children <- xml_children(diet_eml)
+oldnode <- xml_children(diet_children[[2]])[[15]] # loc 15 is the project node
+# designate new node
+newnode <- proj_eml
+# replace project node
+xml_replace(oldnode, newnode)
 
-# iso_eml[[4]]$project
+# check that the node was replaced
+xml_children(diet_children[[2]])[[15]]
+# check that the file is still valid
+eml_validate(diet_eml)
 
+# write modified xml file
+write_xml(diet_eml, paste0(dir, "/fish-diet/knb-lter-nes.2.2.xml"))
 
-x <- read_xml("<parent><child>1</child><child>2<child>3</child></child></parent>")
-children <- xml_children(x)
-t1 <- children[[1]]
-t2 <- children[[2]]
-t3 <- xml_children(children[[2]])[[1]]
-
-xml_replace(t1, t3)
-#> {xml_node}
-#> <child>
-x
 ```
 

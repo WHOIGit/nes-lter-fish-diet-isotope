@@ -10,9 +10,9 @@ Fish_Num	Unique number for fish specimen	numeric	dimensionless
 abbrevName_fish	Abbreviated name of fish species	character				
 uniqueIdentifierFish	Unique identifier for fish specimen	character				
 scientificName_fish	Scientific name of fish specimen	character				
-scientificNameID_fish	Taxonomic serial number of fish specimen	character				
+scientificNameID_fish	Taxonomic serial number of fish specimen with prefix urn:lsid:itis.gov:itis_tsn:	character				
 vernacularName	Common name of fish specimen	character				
-d13C	Carbon-13 to Carbon-12 isotopic ratio in delta noation	numeric	dimensionless			
-d15N	Nitrogen-15 to Nitrogen-14 isotopic ratio in delta noation	numeric	dimensionless			
+d13C	Carbon-13 to Carbon-12 isotopic ratio in delta notation	numeric	dimensionless			
+d15N	Nitrogen-15 to Nitrogen-14 isotopic ratio in delta notation	numeric	dimensionless			
 C_to_N	Carbon to nitrogen isotopic ratio	numeric	dimensionless			
 d13C_corr	Lipid-corrected carbon signature	numeric	dimensionless			

@@ -11,13 +11,13 @@ date	Date of fish collection in UTC	Date		YYYY-MM-DD	NA	Missing data from fisher
 region	Regions as categorized in Suca et al. 2018	categorical				
 average_depth	Average depth of seafloor during sampling event	numeric	meter			
 FishNum	Unique number for fish specimen	numeric	dimensionless			
-forkLength	Length of the fish measured from the tip of the snout to the end of the middle caudal fin rays	numeric	millimeter			
+forkLength	Length of the fish measured from the tip of the snout to the end of the middle caudal fin rays	numeric	millimeter		NA	Fork length not measured
 abbrevName_fish	Abbreviated name of fish species	character				
 uniqueIdentifierFish	Unique identifier for fish specimen	character				
 scientificName_fish	Scientific name of fish specimen	character				
-scientificNameID_fish	Taxonomic serial number of fish specimen	character				
+scientificNameID_fish	Taxonomic serial number of fish specimen with prefix urn:lsid:itis.gov:itis_tsn:	character				
 vernacularName	Common name of fish specimen	character				
-preyTaxon	Llopiz lab category of prey item	character				
-scientificName_preyTaxon	Scientific name of prey item	character				
-scientificNameID_preyTaxon	Taxonomic serial number of prey item	character				
+preyTaxon	Llopiz lab category of prey item	character			-9999	Empty fish gut
+scientificName_preyTaxon	Scientific name of prey item	character			-9999	Empty fish gut
+scientificNameID_preyTaxon	Taxonomic serial number of prey item with prefix urn:lsid:itis.gov:itis_tsn:	character			-9999	Empty fish gut
 preyCount	Total number of prey items per taxonomic category in the gut of fish specimen	numeric	dimensionless			

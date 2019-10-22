@@ -1,6 +1,8 @@
 keyword	keywordThesaurus
-Fish
-Stable Isotope
-Carbon
-Nitrogen
+Fishes	LTER Controlled Vocabulary
+Stable Isotopes	LTER Controlled Vocabulary
+Carbon	LTER Controlled Vocabulary
+Nitrogen	LTER Controlled Vocabulary
+Carbon to nitrogen ratio	LTER Controlled Vocabulary
+Populations	LTER Core Research Areas
 Northeast U.S. Shelf

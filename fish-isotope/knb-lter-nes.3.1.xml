@@ -1,0 +1,585 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eml:eml xmlns:eml="eml://ecoinformatics.org/eml-2.1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:stmml="http://www.xml-cml.org/schema/stmml-1.1" packageId="knb-lter-nes.3.1" xsi:schemaLocation="eml://ecoinformatics.org/eml-2.1.1  http://nis.lternet.edu/schemas/EML/eml-2.1.1/eml.xsd" system="edi">
+  <access authSystem="https://pasta.edirepository.org/authentication" order="allowFirst" scope="document">
+    <allow>
+      <principal>uid=NES,o=LTER,dc=ecoinformatics,dc=org</principal>
+      <permission>all</permission>
+    </allow>
+    <allow>
+      <principal>public</principal>
+      <permission>read</permission>
+    </allow>
+  </access>
+  <dataset>
+    <title>Stable Isotope Data for Small Pelagic Fishes across the Northeast U.S. Continental Shelf from 2013-2015</title>
+    <creator>
+      <individualName>
+        <givenName>Justin</givenName>
+        <givenName>J</givenName>
+        <surName>Suca</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>jsuca@whoi.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0001-5532-4780</userId>
+    </creator>
+    <associatedParty>
+      <individualName>
+        <givenName>Julie</givenName>
+        <givenName>W</givenName>
+        <surName>Pringle</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <role>Technician</role>
+    </associatedParty>
+    <associatedParty>
+      <individualName>
+        <givenName>Zofia</givenName>
+        <givenName>R</givenName>
+        <surName>Knorek</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <role>Technician</role>
+    </associatedParty>
+    <associatedParty>
+      <individualName>
+        <givenName>Sara</givenName>
+        <givenName>L</givenName>
+        <surName>Hamilton</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <role>Technician</role>
+    </associatedParty>
+    <associatedParty>
+      <individualName>
+        <givenName>Jaxine</givenName>
+        <givenName>L</givenName>
+        <surName>Wolfe</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>jawolfe@whoi.edu</electronicMailAddress>
+      <role>Metadataprovider</role>
+    </associatedParty>
+    <pubDate>2019-10-22</pubDate>
+    <abstract>
+      <para>
+  These data represent the carbon and nitrogen stable isotope signatures
+  of small pelagic fishes across the Northeast U.S. Continental Shelf as
+  reported by Suca, J.J., et al. (2018) Feeding dynamics of Northwest
+  Atlantic small pelagic fishes. Progress in Oceanography, 165, 52-62,
+  https://doi.org/10.1016/j.pocean.2018.04.014. The five species of fish
+  in this dataset represent a subset of the species collected in bottom
+  trawls conducted by the NOAA NEFSC Ecosystems Survey Branch from Cape
+  Hatteras to the Gulf of Maine for years 2013-2015. Sampling occurred
+  in the Spring and Fall seasons. Sections of dorsal musculature were
+  analyzed for carbon and nitrogen isotopes using mass spectrometry.
+  Carbon-to-nitrogen isotopic ratios were reported along with the
+  isotopic signatures for carbon and nitrogen respectively.
+  Additionally, a lipid-corrected carbon signature was calculated for
+  the fish muscle tissue. The dataset was supplemented with geospatial
+  and temporal information from NOAA Fisheries trawl databases.
+</para>
+    </abstract>
+    <keywordSet>
+      <keyword>Fishes</keyword>
+      <keyword>Stable Isotopes</keyword>
+      <keyword>Carbon</keyword>
+      <keyword>Nitrogen</keyword>
+      <keyword>Carbon to nitrogen ratio</keyword>
+      <keywordThesaurus>LTER Controlled Vocabulary</keywordThesaurus>
+    </keywordSet>
+    <keywordSet>
+      <keyword>Populations</keyword>
+      <keywordThesaurus>LTER Core Research Areas</keywordThesaurus>
+    </keywordSet>
+    <keywordSet>
+      <keyword>Northeast U.S. Shelf</keyword>
+    </keywordSet>
+    <intellectualRights>
+      <para>
+  This information is released under the Creative Commons license -
+  Attribution - CC BY (https://creativecommons.org/licenses/by/4.0/).
+  The consumer of these data ("Data User" herein) is required
+  to cite it appropriately in any publication that results from its use.
+  The Data User should realize that these data may be actively used by
+  others for ongoing research and that coordination may be necessary to
+  prevent duplicate publication. The Data User is urged to contact the
+  authors of these data if any questions about methodology or results
+  occur. Where appropriate, the Data User is encouraged to consider
+  collaboration or co-authorship with the authors. The Data User should
+  realize that misinterpretation of data may occur if used out of
+  context of the original study. While substantial efforts are made to
+  ensure the accuracy of data and associated documentation, complete
+  accuracy of data sets cannot be guaranteed. All data are made
+  available "as is." The Data User should be aware, however,
+  that data are updated periodically and it is the responsibility of the
+  Data User to check for new versions of the data. The data authors and
+  the repository where these data were obtained shall not be liable for
+  damages resulting from any use or misinterpretation of the data. Thank
+  you.
+</para>
+    </intellectualRights>
+    <coverage>
+      <geographicCoverage>
+        <geographicDescription>Northeast U.S. Shelf</geographicDescription>
+        <boundingCoordinates>
+          <westBoundingCoordinate>-75.37919</westBoundingCoordinate>
+          <eastBoundingCoordinate>-66.54907</eastBoundingCoordinate>
+          <northBoundingCoordinate>44.35496</northBoundingCoordinate>
+          <southBoundingCoordinate>36.10567</southBoundingCoordinate>
+        </boundingCoordinates>
+      </geographicCoverage>
+      <temporalCoverage>
+        <rangeOfDates>
+          <beginDate>
+            <calendarDate>2013-03-15</calendarDate>
+          </beginDate>
+          <endDate>
+            <calendarDate>2015-11-02</calendarDate>
+          </endDate>
+        </rangeOfDates>
+      </temporalCoverage>
+    </coverage>
+    <maintenance>
+      <description>completed</description>
+    </maintenance>
+    <contact>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <positionName>Nes-Lter Information Manager</positionName>
+      <electronicMailAddress>lter-nes-info@whoi.edu</electronicMailAddress>
+    </contact>
+    <methods>
+      <methodStep>
+        <description>
+          <section>
+            <title>Fish Collection</title>
+            <para>
+    Alewife, blueback herring, Atlantic mackerel, Atlantic herring, and
+    Atlantic butterfish were collected from four NOAA Northeast
+    Fisheries Science Center (NEFSC) trawl surveys: spring 2013, spring
+    2014, fall 2014, and fall 2015. Each survey spanned the continental
+    shelf from the northern Gulf of Maine to Cape Hatteras. The number
+    of fish analyzed per species per station ranged from 1 to 5. Fish
+    were frozen shipboard at −80 °C and stored at −80 °C until processed
+    in the laboratory.
+  </para>
+          </section>
+          <section>
+            <title>Stable Isotope Data Collection</title>
+            <para>
+    Small sections of dorsal musculature of the five small pelagic
+    species were analyzed for bulk carbon and nitrogen stable isotopes.
+    Samples were dried at 60 degrees Celsius in a drying oven for at
+    least 48 hours and then pulverized to a powder. Subsamples (1.2–1.5
+    mg) were weighed, wrapped in tin foil, and then analyzed with a PDZ
+    Europa ANCA-GSL elemental analyzer interfaced to a PDZ Europa 20-20
+    isotope ratio mass spectrometer (Sercon Ltd., Cheshire, UK) by the
+    University of California Davis Stable Isotope Facility. Analyses
+    yielded carbon-to-nitrogen ratios and the isotopic ratios of
+    13C-to-12C and 15N-to-14N in each sample. These isotopic ratios are
+    reported in standard delta notation, with the reference standards of
+    Pee Dee belemnite (for d13C) and atmospheric nitrogen (for d15N). A
+    lipid correction curve was applied to each sample using the C-to-N
+    ratio from the mass spectrometry results. This correction was made
+    using the model created for fish muscle tissue, as reported by Logan
+    et al., (2008) Lipid corrections in carbon and nitrogen stable
+    isotope analyses: comparison of chemical extraction and modeling
+    methods. Journal of Animal Ecology, 77, 838-846,
+    https://doi.org/10.1111/j.1365-2656.2008.01394.x.
+  </para>
+          </section>
+          <section>
+            <title>Data Cleaning</title>
+            <para>
+    A column was added which contained a unique identifier for each fish
+    examined. Diets for many of these same specimens are reported in a
+    separate data package. Columns containing decimal latitude and
+    longitude, UTC date and time, and average depth during sampling
+    events were merged from NOAA Fisheries trawl databases (Northeast
+    Fisheries Science Center, 2019: Fall Bottom Trawl Surveys from
+    2013-2015. NOAA National Centers for Environmental Information,
+    https://inport.nmfs.noaa.gov/inport/item/22560, Northeast Fisheries
+    Science Center, 2019: Spring Bottom Trawl Surveys from 2013-2015.
+    NOAA National Centers for Environmental Information,
+    https://inport.nmfs.noaa.gov/inport/item/22561). Additional columns
+    were added which contain the vernacular name for each fish, the best
+    matched scientific name for each fish species from ITIS, along with
+    the corresponding taxonomic serial number (TSN). The data cleaning
+    and metadata template assembly was performed in R Markdown. Further
+    documentation can be found on GitHub, at
+    https://github.com/WHOIGit/nes-lter-fish-diet-isotope.
+  </para>
+          </section>
+          <section>
+            <title>Quality Assurance</title>
+            <para>
+    We assured that the geographic and temporal coverage of the clean
+    data table were within expected ranges.
+  </para>
+          </section>
+        </description>
+      </methodStep>
+    </methods>
+    <project>
+      <title>No project title to report</title>
+      <personnel>
+        <individualName>
+          <givenName>David</givenName>
+          <givenName>E</givenName>
+          <surName>Richardson</surName>
+        </individualName>
+        <organizationName>Northeast U.S. Shelf LTER</organizationName>
+        <role>Principal Investigator</role>
+      </personnel>
+      <funding>NSF: OCE-1655690</funding>
+      <relatedProject>
+        <title>Northeast U.S. Shelf LTER</title>
+        <personnel>
+          <individualName>
+            <givenName>Joel</givenName>
+            <givenName>K</givenName>
+            <surName>Llopiz</surName>
+          </individualName>
+          <organizationName>Northeast U.S. Shelf LTER</organizationName>
+          <electronicMailAddress>jllopiz@whoi.edu</electronicMailAddress>
+          <userId directory="https://orcid.org">https://orcid.org/0000-0002-7584-7471</userId>
+          <role>Principal Investigator</role>
+        </personnel>
+        <funding>NSF: OCE-1655691</funding>
+      </relatedProject>
+    </project>
+    <dataTable>
+      <entityName>Fish stable isotope dataset cleaned for EDI</entityName>
+      <entityDescription>Fish stable isotope dataset cleaned for EDI</entityDescription>
+      <physical>
+        <objectName>nes-lter-fish-stable-isotope-2013-2015.csv</objectName>
+        <size unit="bytes">110219</size>
+        <authentication method="MD5">5fd5c1a3f04e461afc731311a3955348</authentication>
+        <dataFormat>
+          <textFormat>
+            <numHeaderLines>1</numHeaderLines>
+            <recordDelimiter>\n</recordDelimiter>
+            <attributeOrientation>column</attributeOrientation>
+            <simpleDelimited>
+              <fieldDelimiter>,</fieldDelimiter>
+            </simpleDelimited>
+          </textFormat>
+        </dataFormat>
+      </physical>
+      <attributeList>
+        <attribute>
+          <attributeName>cruise</attributeName>
+          <attributeDefinition>Cruise that sample was collected during</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Cruise that sample was collected during</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>station</attributeName>
+          <attributeDefinition>Station where sample was collected</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>natural</numberType>
+                <bounds>
+                  <minimum exclusive="false">3</minimum>
+                  <maximum exclusive="false">446</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>decimalLatitude</attributeName>
+          <attributeDefinition>Latitude of sample event</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">36.11</minimum>
+                  <maximum exclusive="false">44.35</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>Missing data in fisheries dataset</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>decimalLongitude</attributeName>
+          <attributeDefinition>Longitude of sample event</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-75.38</minimum>
+                  <maximum exclusive="false">-66.55</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>Missing data in fisheries dataset</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>time_UTC</attributeName>
+          <attributeDefinition>Time of fish collecton in UTC</attributeDefinition>
+          <storageType>date</storageType>
+          <measurementScale>
+            <dateTime>
+              <formatString>hh:mm:ss</formatString>
+              <dateTimeDomain/>
+            </dateTime>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>Missing data in fisheries dataset</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>date</attributeName>
+          <attributeDefinition>Date of fish collection in UTC</attributeDefinition>
+          <storageType>date</storageType>
+          <measurementScale>
+            <dateTime>
+              <formatString>YYYY-MM-DD</formatString>
+              <dateTimeDomain/>
+            </dateTime>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>Missing data in fisheries dataset</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>average_depth</attributeName>
+          <attributeDefinition>Average depth of seafloor during sample event</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>meter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">25</minimum>
+                  <maximum exclusive="false">341</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>Missing data in fisheries dataset</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>Fish_Num</attributeName>
+          <attributeDefinition>Unique number for fish specimen</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>natural</numberType>
+                <bounds>
+                  <minimum exclusive="false">2</minimum>
+                  <maximum exclusive="false">750</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>abbrevName_fish</attributeName>
+          <attributeDefinition>Abbreviated name of fish species</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Abbreviated name of fish species</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>uniqueIdentifierFish</attributeName>
+          <attributeDefinition>Unique identifier for fish specimen</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Unique identifier for fish specimen</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>scientificName_fish</attributeName>
+          <attributeDefinition>Scientific name of fish specimen</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Scientific name of fish specimen</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>scientificNameID_fish</attributeName>
+          <attributeDefinition>Taxonomic serial number of fish specimen with prefix urn:lsid:itis.gov:itis_tsn:</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Taxonomic serial number of fish specimen with prefix urn:lsid:itis.gov:itis_tsn:</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>vernacularName</attributeName>
+          <attributeDefinition>Common name of fish specimen</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Common name of fish specimen</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>d13C</attributeName>
+          <attributeDefinition>Carbon-13 to Carbon-12 isotopic ratio in delta notation</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-23.82</minimum>
+                  <maximum exclusive="false">-16.9</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>d15N</attributeName>
+          <attributeDefinition>Nitrogen-15 to Nitrogen-14 isotopic ratio in delta notation</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">9.25</minimum>
+                  <maximum exclusive="false">17.44</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>C_to_N</attributeName>
+          <attributeDefinition>Carbon to nitrogen isotopic ratio</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">1.93</minimum>
+                  <maximum exclusive="false">8.55</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>d13C_corr</attributeName>
+          <attributeDefinition>Lipid-corrected carbon signature</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-21.71</minimum>
+                  <maximum exclusive="false">-16.27</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+      </attributeList>
+      <numberOfRecords>501</numberOfRecords>
+    </dataTable>
+    <otherEntity>
+      <entityName>Original fish stable isotope datasheet from the Llopiz lab</entityName>
+      <entityDescription>Original fish stable isotope datasheet from the Llopiz lab</entityDescription>
+      <physical>
+        <objectName>Forage_Fish_Stable_Isotope_Data_2013_2015_Final.xlsx</objectName>
+        <size unit="bytes">57675</size>
+        <authentication method="MD5">df3adf1154d6fc779bc6ec7f06049f30</authentication>
+        <dataFormat>
+          <externallyDefinedFormat>
+            <formatName>unknown</formatName>
+          </externallyDefinedFormat>
+        </dataFormat>
+      </physical>
+      <entityType>unknown</entityType>
+    </otherEntity>
+  </dataset>
+</eml:eml>
