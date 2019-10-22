@@ -105,6 +105,7 @@ diet <- read_excel(path = paste0(dir, "/fish-diet/", diet_xls),
                   sheet = 1, na = "NA")
 # check for duplicate rows
 diet_unique <- unique(diet)
+# filter(n() < 1)
 # There is one duplicated row in the data
 diet <- diet_unique
 
@@ -238,8 +239,8 @@ coord_mismatch <- diet_check %>% filter(lon_match == FALSE | lat_match == FALSE)
 depth_mismatch <- diet_check %>% filter(depth_match == FALSE)
 
 # write csv files
-write.csv(coord_mismatch, paste0(dir, "/fish-diet/coord_mismatch.csv"), row.names = FALSE)
-write.csv(depth_mismatch, paste0(dir, "/fish-diet/depth_mismatch.csv"), row.names = FALSE)
+# write.csv(coord_mismatch, paste0(dir, "/fish-diet/coord_mismatch.csv"), row.names = FALSE)
+# write.csv(depth_mismatch, paste0(dir, "/fish-diet/depth_mismatch.csv"), row.names = FALSE)
 
 ## Final Adjustments --------
 
@@ -482,13 +483,15 @@ This chunk will inspect the isotope data to make sure it aligns statistically wi
 
 # compute summary stats
 iso_check <- isotope_EDI %>%
-  select(d13C, d15N, C_to_N) %>%
+  select(d13C, d15N, C_to_N, d13C_corr) %>%
   summarise(mean_d13C = mean(d13C),
             mean_d15N = mean(d15N),
             mean_C_to_N = mean(C_to_N),
+            mean_d13C_corr = mean(d13C_corr),
             var_d13C = var(d13C),
             var_d15N = var(d15N),
-            var_C_to_N = var(C_to_N))
+            var_C_to_N = var(C_to_N),
+            var_d13C_corr = var(d13C_corr))
 
 ```
 
@@ -563,24 +566,24 @@ library(xml2)
 proj_eml <- read_xml("parent_project.txt", from = "xml")
 
 # read in diet xml file exported by make_eml
-diet_eml <- read_xml("https://raw.githubusercontent.com/WHOIGit/nes-lter-fish-diet-isotope/master/fish-diet/knb-lter-nes.2.1.xml", from  = "xml")
+diet_eml <- read_xml("https://raw.githubusercontent.com/WHOIGit/nes-lter-fish-diet-isotope/master/fish-diet/knb-lter-nes.2.2.xml", from  = "xml")
 # both objects should be of class c("xml_document" "xml_node")
 
-# isolate old node
+# isolate old node (Currently hardcoded)
 diet_children <- xml_children(diet_eml)
-oldnode <- xml_children(diet_children[[2]])[[15]] # loc 15 is the project node
+oldnode <- xml_children(diet_children[[2]])[[16]] # loc 16 is the project node
 # designate new node
 newnode <- proj_eml
 # replace project node
 xml_replace(oldnode, newnode)
 
-# check that the node was replaced
-xml_children(diet_children[[2]])[[15]]
-# check that the file is still valid
-eml_validate(diet_eml)
-
 # write modified xml file
 write_xml(diet_eml, paste0(dir, "/fish-diet/knb-lter-nes.2.2.xml"))
+
+# check that the node was replaced
+xml_children(diet_children[[2]])[[16]]
+# check that the file is still valid
+eml_validate(diet_eml)
 
 ```
 
