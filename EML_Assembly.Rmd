@@ -444,11 +444,10 @@ make_eml(path = paste0(dir,"/fish-diet"),
          temporal.coverage = c(startdate_as_char, enddate_as_char),
          geographic.description = "Northeast U.S. Shelf",
          geographic.coordinates = c(North, East, South, West),
-         maintenance.description = "completed", 
+         maintenance.description = "Completed. This is a corrected version of the previous package.", 
          user.id = "NES",
          user.domain = "LTER",
          package.id = diet_pkg)
-
 ```
 
 
