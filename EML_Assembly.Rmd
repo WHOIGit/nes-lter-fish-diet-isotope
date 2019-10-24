@@ -11,6 +11,8 @@ This section of code will read in the raw excel file, convert the data from wide
 
 The instructions for installing EMLassemblyline package can be found [here](https://github.com/EDIorg/EMLassemblyline/blob/master/documentation/instructions.md). This documentation also includes instructions for assembling EML templates for export. 
 
+EMLassembly was constructed with reference to [EML Best Practices](https://environmentaldatainitiative.files.wordpress.com/2017/11/emlbestpractices-v3.pdf)
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 
