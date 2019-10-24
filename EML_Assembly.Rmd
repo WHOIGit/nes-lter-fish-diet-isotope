@@ -51,47 +51,56 @@ For the Fisheries trawl datasets, the spring bottom trawl survey data can be fou
 
 Note date of access.
 ```{r}
-# set the path to the fisheries directory
-fisheries_dir <- "/Users/jaxinewolfe/Documents/Research/PEP/NESLTER/Data/LlopizLab/CCA/FSCSTables_SVSTA/"
-# create list of files in the working directory
-file_list <- list.files(path = fisheries_dir, full.names = TRUE)
 
-# Define columns to be extracted from fisheries data
-FSCScols <- c("CRUISE6", "STATION", "GMT_YEAR", "GMT_MONTH", "GMT_DAY", "GMT_TIME", 
-              "DECDEG_BEGLAT", "DECDEG_BEGLON", "AVGDEPTH")
-
-# read the first file in the fisheries directory
-previous_FSCSdataset <- read_csv(file_list[1]) %>%
-    select(FSCScols) %>%
-    filter(GMT_YEAR >= 2013 & GMT_YEAR <= 2015)
+if (!file.exists("fisheries-data.csv")) {
+  # set the path to the fisheries directory
+  fisheries_dir <- "/Users/jaxinewolfe/Documents/Research/PEP/NESLTER/Data/LlopizLab/CCA/FSCSTables_SVSTA/"
+  # create list of files in the working directory
+  file_list <- list.files(path = fisheries_dir, full.names = TRUE)
   
-# Combine spring and fall cruise datasets to be merged with the diet data
-for (i in 2:length(file_list)){
-
-  # define the next FSCSdataset to read in
-  next_FSCSdataset <- read_csv(file_list[i]) %>% 
-    select(FSCScols) %>%
-    filter(GMT_YEAR >= 2013 & GMT_YEAR <= 2015)
+  # Define columns to be extracted from fisheries data
+  FSCScols <- c("CRUISE6", "STATION", "GMT_YEAR", "GMT_MONTH", "GMT_DAY", "GMT_TIME", 
+                "DECDEG_BEGLAT", "DECDEG_BEGLON", "AVGDEPTH")
   
-  # add the rows of the new dataset (colnames should be the same)
-  FSCSdataset <- rbind(previous_FSCSdataset, next_FSCSdataset)
-  # which(is.na(FSCSdataset), arr.ind = TRUE)  
-  # the only NAs are in average depth
+  # read the first file in the fisheries directory
+  previous_FSCSdataset <- read_csv(file_list[1]) %>%
+      select(FSCScols) %>%
+      filter(GMT_YEAR >= 2013 & GMT_YEAR <= 2015)
+    
+  # Combine spring and fall cruise datasets to be merged with the diet data
+  for (i in 2:length(file_list)){
   
-  # if statment to reset the previous datasets until all datasets are read in
-  if(i < length(file_list)) {
-    previous_FSCSdataset <- FSCSdataset
+    # define the next FSCSdataset to read in
+    next_FSCSdataset <- read_csv(file_list[i]) %>% 
+      select(FSCScols) %>%
+      filter(GMT_YEAR >= 2013 & GMT_YEAR <= 2015)
+    
+    # add the rows of the new dataset (colnames should be the same)
+    FSCSdataset <- rbind(previous_FSCSdataset, next_FSCSdataset)
+    # which(is.na(FSCSdataset), arr.ind = TRUE)  
+    # the only NAs are in average depth
+    
+    # if statment to reset the previous datasets until all datasets are read in
+    if(i < length(file_list)) {
+      previous_FSCSdataset <- FSCSdataset
+    }
   }
+  
+  # Consolodate GMT year, month, day columns into one
+  FSCSdataset$date <- with(FSCSdataset,
+                                 ymd(paste(GMT_YEAR, GMT_MONTH, GMT_DAY, sep= ' '),
+                                         tz = "GMT"))
+  
+  # remove columns used to consolo-date heh
+  FSCSdataset <- FSCSdataset %>% select(-GMT_YEAR, -GMT_MONTH, -GMT_DAY)
+  
+  # export subsetted fisheries data file and push to Github
+  write.csv(FSCSdataset, "fisheries-data.csv", row.names = FALSE)
+  
+} else {
+  # read in fisheries
+  FSCSdataset <- read_csv("fisheries-data.csv")
 }
-
-# Consolodate GMT year, month, day columns into one
-FSCSdataset$date <- with(FSCSdataset,
-                               ymd(paste(GMT_YEAR, GMT_MONTH, GMT_DAY, sep= ' '),
-                                       tz = "GMT"))
-
-# remove columns used to consolo-date heh
-FSCSdataset <- FSCSdataset %>% select(-GMT_YEAR, -GMT_MONTH, -GMT_DAY)
-
 ```
 
 ## Preparing Diet Data for EDI
