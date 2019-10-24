@@ -58,19 +58,28 @@ file_list <- list.files(path = fisheries_dir, full.names = TRUE)
 FSCScols <- c("CRUISE6", "STATION", "GMT_YEAR", "GMT_MONTH", "GMT_DAY", "GMT_TIME", 
               "DECDEG_BEGLAT", "DECDEG_BEGLON", "AVGDEPTH")
 
-# Combine spring and fall cruise datasets to be merged with the diet data
-for (i in 2:length(file_list)){
-  # read the first file in the fisheries directory
-  FSCSdataset <- read_csv(file_list[1]) %>%
+# read the first file in the fisheries directory
+previous_FSCSdataset <- read_csv(file_list[1]) %>%
     select(FSCScols) %>%
     filter(GMT_YEAR >= 2013 & GMT_YEAR <= 2015)
-  # create temporary dataset to ammend the FSCSdataset
-  temp_dataset <- read_csv(file_list[i]) %>% select(FSCScols)
+  
+# Combine spring and fall cruise datasets to be merged with the diet data
+for (i in 2:length(file_list)){
+
+  # define the next FSCSdataset to read in
+  next_FSCSdataset <- read_csv(file_list[i]) %>% 
+    select(FSCScols) %>%
+    filter(GMT_YEAR >= 2013 & GMT_YEAR <= 2015)
+  
   # add the rows of the new dataset (colnames should be the same)
-  FSCSdataset <- rbind(FSCSdataset, temp_dataset[, colnames(FSCSdataset)])
-  FSCSdataset[is.na(FSCSdataset)] <- "NA" # convert empties to NA
-  # discard temporary dataset
-  rm(temp_dataset)
+  FSCSdataset <- rbind(previous_FSCSdataset, next_FSCSdataset)
+  # which(is.na(FSCSdataset), arr.ind = TRUE)  
+  # the only NAs are in average depth
+  
+  # if statment to reset the previous datasets until all datasets are read in
+  if(i < length(file_list)) {
+    previous_FSCSdataset <- FSCSdataset
+  }
 }
 
 # Consolodate GMT year, month, day columns into one
@@ -382,6 +391,7 @@ At the moment, EML assembly line doesn't provide project abstract or publisher.
 ## ASSEMBLE TEMPLATES ----------
 # save filename in variable
 diet_csv <- "nes-lter-fish-diet-2013-2015.csv"
+diet_pkg <- "knb-lter-nes.2.2"
 
 # Import EDI templates for diet dataset licensed under CCBY
 # import_templates(path = paste0(dir,"/fish-diet"),
@@ -426,7 +436,7 @@ make_eml(path = paste0(dir,"/fish-diet"),
          maintenance.description = "completed", 
          user.id = "NES",
          user.domain = "LTER",
-         package.id = "knb-lter-nes.2.2")
+         package.id = diet_pkg)
 
 ```
 
@@ -492,7 +502,7 @@ isotope_check <- data.frame(rbind(apply(isotopes, 2, mean),
                    row.names = c("mean", "min", "max"))
 
 # export isotope quality check
-write.csv(isotope_check, "isotope_QAC.csv", row.names = FALSE)
+# write.csv(isotope_check, "isotope_QA.csv")
 ```
 
 ## Construct XML for Stable Isotope Data
@@ -505,6 +515,7 @@ At the moment, EML assembly line doesn't provide project abstract or publisher.
 
 # save filename to variable
 iso_csv <- "nes-lter-fish-stable-isotope-2013-2015.csv"
+iso_pkg <- "knb-lter-nes.3.1"
 
 ## ASSEMBLE TEMPLATES ----------
 # Import EDI templates for diet dataset licensed under CCBY
@@ -544,13 +555,11 @@ make_eml(path = paste0(dir,"/fish-isotope"),
          maintenance.description = "completed", 
          user.id = "NES",
          user.domain = "LTER",
-         package.id = "knb-lter-nes.3.1")
+         package.id = iso_pkg)
 
 ```
 
 ## Insert Custom Project Node
-
-ANY CHANGES TO THE XML FILE MUST BE PUSHED TO GITHUB BEFORE RUNNING THIS CHUNK
 
 Step 1: Read in the xml file and the new xml node
 Step 2: Insert the new node or replace the old node with the new node
@@ -562,49 +571,46 @@ Instructions for node replacement using the xml2 package can be found [here](htt
 # install.packages("xml2")
 library(xml2)
 
-# read in project node
-project_eml <- read_xml("parent_project.txt", from = "xml")
-
-# read in xml files exported by make_eml
-# diet data
-diet_eml <- read_xml("https://raw.githubusercontent.com/WHOIGit/nes-lter-fish-diet-isotope/master/fish-diet/knb-lter-nes.2.2.xml", from  = "xml")
-# isotope data
-iso_eml <- read_xml("https://raw.githubusercontent.com/WHOIGit/nes-lter-fish-diet-isotope/master/fish-isotope/knb-lter-nes.3.1.xml", from  = "xml")
-# all objects should be of class c("xml_document" "xml_node")
-
 # Function to replace an existant node with a new node in an xml document
-node_replacement <- function(x, newnode) {
-  # find old project node
-  oldnode <- xml_find_first(x, ".//project") # find project node
-  # replace with new project node
-  xml_replace(oldnode, newnode)
-  return(x)
-}
+# project_replacement <- function(x, newnode) {
+#   # find old project node
+#   oldnode <- xml_find_first(x, ".//project") # find project node
+#   # replace with new project node
+#   xml_replace(oldnode, newnode)
+#   return(x)
+# }
 
-# Function to insert a new node into an xml document
-node_insert <- function(x, newnode) {
+# Function inserts project node after the methods node of an xml document
+project_insert <- function(x, projectnode) {
+  if (is.na(xml_find_first(x, ".//project")) == FALSE) {
+    stop("<project> node already exists")
+  }
+  
   # find methods node
   methodsnode <- xml_find_first(x, ".//methods")
   # add project node after methods and before dataTable
-  xml_add_sibling(methodsnode, newnode, where = "after")
+  xml_add_sibling(methodsnode, projectnode, where = "after")
+  
+  if (eml_validate(x) == FALSE) {
+    warning("XML document not valid")
+  }
   return(x)
 }
 
-# make the neccessary modifications
-diet_eml_final <- node_insert(diet_eml, project_eml)
-iso_eml_final <- node_insert(iso_eml, project_eml)
+# read in project node to insert
+project_eml <- read_xml("parent_project.txt", from = "xml")
+# read in xml files exported by make_eml
+diet_eml <- read_xml(paste0(dir,"/fish-diet/", diet_pkg, ".xml"), from = "xml")
+iso_eml <- read_xml(paste0(dir,"/fish-isotope/", iso_pkg, ".xml"), from = "xml")
+# all objects should be of class c("xml_document" "xml_node")
 
-# check nodes
-xml_children(xml_children(diet_eml_final)[[2]])
-xml_children(xml_children(iso_eml_final)[[2]])
-
-# check that the file is still valid
-eml_validate(diet_eml)
-eml_validate(iso_eml)
+# apply project insert function to xml files
+diet_eml_final <- project_insert(diet_eml, project_eml)
+iso_eml_final <- project_insert(iso_eml, project_eml)
 
 # write modified xml file
-write_xml(diet_eml_final, paste0(dir, "/fish-diet/knb-lter-nes.2.2.xml"))
-write_xml(iso_eml_final, paste0(dir, "/fish-isotope/knb-lter-nes.3.1.xml"))
+write_xml(diet_eml_final, paste0(dir, "/fish-diet/", diet_pkg, ".xml"))
+write_xml(iso_eml_final, paste0(dir, "/fish-isotope/", iso_pkg, ".xml"))
 
 ```
 
