@@ -77,9 +77,10 @@
       </individualName>
       <organizationName>Northeast U.S. Shelf LTER</organizationName>
       <electronicMailAddress>jawolfe@whoi.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0001-9620-5382</userId>
       <role>Metadataprovider</role>
     </associatedParty>
-    <pubDate>2019-10-24</pubDate>
+    <pubDate>2019-10-25</pubDate>
     <abstract>
       <para>
   These data represent the diet composition of small pelagic fishes
@@ -708,8 +709,8 @@
       <entityDescription>Original fish diet dataset from the Llopiz lab</entityDescription>
       <physical>
         <objectName>Forage_Fish_Diet_Data_2013_2015_Final.xlsx</objectName>
-        <size unit="bytes">126624</size>
-        <authentication method="MD5">7b8192c8c9f116eccfdd815b86e03590</authentication>
+        <size unit="bytes">126589</size>
+        <authentication method="MD5">361d9eed592bd8f7668bda04d62944c7</authentication>
         <dataFormat>
           <externallyDefinedFormat>
             <formatName>unknown</formatName>
